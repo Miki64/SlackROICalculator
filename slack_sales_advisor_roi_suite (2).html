@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<html lang="fr" class="h-full bg-slate-50">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slack Sales Discovery & ROI Proposal Suite</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            slack: {
+              aubergine: '#4A154B',
+              darkAubergine: '#3F0E40',
+              plum: '#611f69',
+              active: '#1164A3',
+              green: '#2BAC76',
+              yellow: '#ECB22E',
+              red: '#E01E5A',
+              blue: '#1264A3',
+              sidebar: '#350d36',
+              surface: '#F8F8F8'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom scrollbar and animations */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.15rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* Styles compacts appliqués dynamiquement lors de l'export PDF */
+    .pdf-export-mode {
+      width: 100% !important;
+      max-width: 100% !important;
+      background: white !important;
+      color: #0f172a !important;
+      font-size: 8pt !important;
+      line-height: 1.28 !important;
+      padding: 0.5cm !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+    .pdf-export-mode h1, .pdf-export-mode #propClientHeading { font-size: 13pt !important; line-height: 1.2 !important; }
+    .pdf-export-mode h2 { font-size: 10.5pt !important; }
+    .pdf-export-mode h3 { font-size: 9pt !important; padding-bottom: 0.15rem !important; margin-bottom: 0.3rem !important; }
+    .pdf-export-mode h4 { font-size: 8.5pt !important; }
+    .pdf-export-mode p, .pdf-export-mode span, .pdf-export-mode div, .pdf-export-mode label { font-size: 7.8pt !important; }
+    .pdf-export-mode .text-xs { font-size: 7pt !important; }
+    .pdf-export-mode .text-sm { font-size: 7.8pt !important; }
+    .pdf-export-mode .text-base { font-size: 8.5pt !important; }
+    .pdf-export-mode .text-lg { font-size: 9.5pt !important; }
+    .pdf-export-mode .text-xl, .pdf-export-mode .text-2xl, .pdf-export-mode .text-3xl { font-size: 11pt !important; }
+    .pdf-export-mode .p-6, .pdf-export-mode .p-8, .pdf-export-mode .p-12 { padding: 0.45rem !important; }
+    .pdf-export-mode .gap-4, .pdf-export-mode .gap-6, .pdf-export-mode .gap-8 { gap: 0.35rem !important; }
+    .pdf-export-mode .space-y-6 > * + *, .pdf-export-mode .space-y-8 > * + * { margin-top: 0.45rem !important; }
+    .pdf-export-mode .space-y-4 > * + * { margin-top: 0.35rem !important; }
+    .pdf-export-mode .space-y-3 > * + * { margin-top: 0.25rem !important; }
+    
+    @media print {
+      @page {
+        margin: 0.8cm 1cm;
+        size: A4 portrait;
+      }
+      .no-print { display: none !important; }
+      .print-only { display: block !important; }
+      body { 
+        background: white !important; 
+        color: #0f172a !important; 
+        font-size: 8pt !important; 
+        line-height: 1.3 !important; 
+      }
+      .proposal-container { 
+        box-shadow: none !important; 
+        border: none !important; 
+        width: 100% !important; 
+        max-width: 100% !important; 
+        margin: 0 !important; 
+        padding: 0 !important; 
+      }
+      .proposal-container > div {
+        margin-bottom: 0.6rem !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+      h1, #propClientHeading { font-size: 13pt !important; line-height: 1.2 !important; }
+      h2 { font-size: 10.5pt !important; }
+      h3 { font-size: 9pt !important; padding-bottom: 0.15rem !important; margin-bottom: 0.3rem !important; }
+      h4 { font-size: 8.5pt !important; }
+      p, span, div, label { font-size: 7.8pt !important; }
+      .text-xs { font-size: 7pt !important; }
+      .text-sm { font-size: 7.8pt !important; }
+      .text-base { font-size: 8.5pt !important; }
+      .text-lg { font-size: 9.5pt !important; }
+      .text-xl { font-size: 10pt !important; }
+      .text-2xl, .text-3xl { font-size: 11.5pt !important; }
+      
+      .bg-slate-50, .bg-purple-50, .bg-purple-50\/40, .bg-purple-50\/60, .bg-amber-50, .bg-rose-50\/80, .bg-sky-50\/80 {
+        background-color: #f8fafc !important;
+        border: 1px solid #cbd5e1 !important;
+        padding: 0.35rem 0.5rem !important;
+        border-radius: 6px !important;
+      }
+      .rounded-2xl { border-radius: 8px !important; }
+      .rounded-xl { border-radius: 6px !important; }
+      .p-6, .p-8, .p-12 { padding: 0.5rem !important; }
+      .gap-4, .gap-6, .gap-8 { gap: 0.35rem !important; }
+      .space-y-6 > * + *, .space-y-8 > * + * { margin-top: 0.5rem !important; }
+      .space-y-4 > * + * { margin-top: 0.35rem !important; }
+      .space-y-3 > * + * { margin-top: 0.25rem !important; }
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col font-sans text-slate-800 antialiased overflow-x-hidden">
+
+  <!-- Top Navigation Header -->
+  <header class="no-print bg-slack-darkAubergine text-white border-b border-slack-plum/40 sticky top-0 z-40 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center p-1.5 border border-white/20 shadow-inner">
+          <svg viewBox="0 0 122.8 122.8" class="w-full h-full">
+            <path fill="#e01e5a" d="M25.8 77.6c0 7.1-5.8 12.9-12.9 12.9S0 84.7 0 77.6s5.8-12.9 12.9-12.9h12.9v12.9zm6.5 0c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9v32.3c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V77.6z"/>
+            <path fill="#36c5f0" d="M45.2 25.8c-7.1 0-12.9-5.8-12.9-12.9S38.1 0 45.2 0s12.9 5.8 12.9 12.9v12.9H45.2zm0 6.5c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9H12.9C5.8 58.1 0 52.3 0 45.2s5.8-12.9 12.9-12.9h32.3z"/>
+            <path fill="#2eb67d" d="M97 45.2c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9-5.8 12.9-12.9 12.9H97V45.2zm-6.5 0c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V12.9C64.7 5.8 70.5 0 77.6 0s12.9 5.8 12.9 12.9v32.3z"/>
+            <path fill="#ecb22e" d="M77.6 97c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9-12.9-5.8-12.9-12.9V97h12.9zm0-6.5c-7.1 0-12.9-5.8-12.9-12.9s5.8-12.9 12.9-12.9h32.3c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9H77.6z"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+            Slack Closing Cockpit
+            <span class="text-xs bg-slack-green/20 text-emerald-300 font-semibold px-2 py-0.5 rounded-full border border-slack-green/40">Certified Consultant</span>
+            <span class="text-xs bg-purple-500/30 text-purple-200 font-semibold px-2 py-0.5 rounded-full border border-purple-400/40 flex items-center gap-1">
+              <i class="fa-solid fa-sparkles text-amber-300"></i> Gemini AI Copilot
+            </span>
+          </h1>
+          <p class="text-xs text-slate-300">Framework Découverte, Objections, ROI & Recommandation Commerciale</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-3">
+        <button id="btnQuickFillDemo" class="text-xs bg-white/10 hover:bg-white/20 text-white font-medium px-3 py-1.5 rounded-lg border border-white/10 transition flex items-center gap-1.5 shadow-sm">
+          <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Charger Exemple Prospect
+        </button>
+        <button id="btnResetAll" class="text-xs bg-red-500/20 hover:bg-red-500/30 text-rose-200 font-medium px-3 py-1.5 rounded-lg border border-red-400/30 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-rotate-left"></i> Réinitialiser
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="bg-slack-sidebar/70 border-t border-white/5 backdrop-blur-sm px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto flex space-x-1 sm:space-x-4 overflow-x-auto py-2 text-sm font-medium">
+        <button data-tab="tab-discovery" class="tab-btn flex items-center gap-2 px-3 py-2 rounded-lg text-white bg-white/15 border border-white/10 shadow-sm transition">
+          <i class="fa-regular fa-comments text-sky-400"></i>
+          <span>1. Découverte (10 Questions)</span>
+        </button>
+        <button data-tab="tab-objections" class="tab-btn flex items-center gap-2 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition">
+          <i class="fa-solid fa-shield-halved text-rose-400"></i>
+          <span>2. Objections Killers</span>
+        </button>
+        <button data-tab="tab-scorecard" class="tab-btn flex items-center gap-2 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition">
+          <i class="fa-solid fa-chart-pie text-amber-400"></i>
+          <span>3. Matrice de Maturité</span>
+          <span id="tabScoreBadge" class="ml-1 text-xs bg-amber-400/20 text-amber-300 px-1.5 py-0.5 rounded-full border border-amber-400/30">12/20</span>
+        </button>
+        <button data-tab="tab-roi" class="tab-btn flex items-center gap-2 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition">
+          <i class="fa-solid fa-calculator text-emerald-400"></i>
+          <span>4. Calculateur ROI</span>
+          <span id="tabRoiPill" class="ml-1 text-xs bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded-full border border-emerald-500/30">+340%</span>
+        </button>
+        <button data-tab="tab-proposal" class="tab-btn flex items-center gap-2 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition">
+          <i class="fa-solid fa-file-signature text-purple-300"></i>
+          <span>5. Proposition Stratégique</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Body Content Area -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+
+    <!-- Toast Notification Banner -->
+    <div id="toastNotification" class="fixed bottom-6 right-6 max-w-md bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl border border-slate-700 transform translate-y-24 opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
+      <div id="toastIcon" class="w-8 h-8 rounded-full bg-slack-green/20 text-slack-green flex items-center justify-center flex-shrink-0">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <p id="toastMessage" class="text-sm font-medium">Notification message</p>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- TAB 1: DÉCOUVERTE QUALIFIÉE -->
+    <!-- ================================================================= -->
+    <section id="tab-discovery" class="tab-content block space-y-6">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+          <div>
+            <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center text-sm font-bold">1</span>
+              Questionnaire d'Investigation & Découverte Cadrée
+            </h2>
+            <p class="text-sm text-slate-500 mt-1">Posez ces questions percutantes pour chiffrer la friction interne, l'infobésité et justifier l'accélération opérationnelle.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button id="btnAiSimulateAnswers" class="text-xs bg-gradient-to-r from-purple-600 to-slack-darkAubergine hover:from-purple-700 hover:to-slack-plum text-white font-semibold px-3 py-1.5 rounded-lg shadow-sm transition flex items-center gap-1.5 border border-purple-400/30">
+              <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Simuler Réponses IA (Secteur)
+            </button>
+            <div class="flex items-center gap-2 bg-slate-50 p-2 rounded-xl border border-slate-200">
+              <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Progression :</span>
+              <span id="discoveryAnswerCount" class="text-xs font-bold bg-sky-600 text-white px-2 py-0.5 rounded-full">0 / 10 complétées</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Informations Prospect Header -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 my-6 p-4 rounded-xl bg-slate-50 border border-slate-200/60">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Nom du Prospect / Entreprise</label>
+            <input type="text" id="clientName" placeholder="Ex: Acme Technologies" value="Acme Corp" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-slack-aubergine/40 focus:outline-none transition">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Contact Principal & Titre</label>
+            <input type="text" id="clientContact" placeholder="Ex: Sophie Martin (COO / DSI)" value="Marc Dupont (VP Operations)" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-slack-aubergine/40 focus:outline-none transition">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Secteur d'Activité</label>
+            <select id="clientSector" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-slack-aubergine/40 focus:outline-none transition">
+              <option value="Tech / SaaS / ESN">Tech / SaaS / ESN</option>
+              <option value="Services Financiers / FinTech">Services Financiers / FinTech</option>
+              <option value="Industrie / Retail">Industrie / Retail</option>
+              <option value="Santé / Biotech">Santé / Biotech</option>
+              <option value="Agence / Conseil">Agence / Conseil</option>
+              <option value="Autre">Autre secteur</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Questions Accordion / Cards List -->
+        <div class="space-y-4" id="discoveryQuestionsContainer">
+          <!-- Questions will be rendered by JS -->
+        </div>
+
+        <div class="mt-6 flex justify-end">
+          <button data-goto="tab-objections" class="goto-tab-btn bg-slack-darkAubergine hover:bg-slack-plum text-white font-medium px-6 py-2.5 rounded-xl shadow transition flex items-center gap-2 text-sm">
+            Passer aux Objections & Arguments <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- TAB 2: OBJECTIONS KILLERS & ARGUMENTAIRE -->
+    <!-- ================================================================= -->
+    <section id="tab-objections" class="tab-content hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+          <div>
+            <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center text-sm font-bold">2</span>
+              Killers d'Objections & Tactiques de Closing
+            </h2>
+            <p class="text-sm text-slate-500 mt-1">Passez de la défense à l'attaque : déjouez les résistances sur Microsoft Teams, le coût ou les distractions.</p>
+          </div>
+          <span class="badge-pill bg-rose-50 text-rose-700 border border-rose-200">
+            <i class="fa-solid fa-bullseye mr-1.5"></i> Vente Stratégique
+          </span>
+        </div>
+
+        <!-- Objections Interactive Selector Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 my-6" id="objectionsContainer">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Section Notes Particulières Objections Client -->
+        <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <label class="block text-sm font-bold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-pen-to-square text-slack-aubergine"></i> Objections spécifiques soulevées par le client :
+            </label>
+            <button id="btnAiGenerateCounterPitch" class="text-xs bg-gradient-to-r from-slack-darkAubergine to-purple-800 hover:from-slack-plum hover:to-purple-900 text-white font-semibold px-3.5 py-1.5 rounded-lg shadow-sm transition flex items-center gap-1.5 self-start sm:self-auto border border-purple-300/30">
+              <i class="fa-solid fa-bolt text-amber-300"></i> <span>Générer Parade IA avec Gemini</span>
+            </button>
+          </div>
+          <textarea id="customObjectionNotes" rows="2" placeholder="Ex: Le DSI refuse de payer Slack car Microsoft Teams est déjà souscrit, et le directeur financier trouve que 11,75€ par utilisateur par mois est excessif..." class="w-full bg-white border border-slate-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-slack-aubergine/40 focus:outline-none transition"></textarea>
+
+          <!-- AI Objection Killer Output Card -->
+          <div id="aiObjectionResponseContainer" class="hidden bg-gradient-to-br from-purple-900/90 to-slate-900 text-white rounded-xl p-4 sm:p-5 border border-purple-400/30 shadow-md space-y-3">
+            <div class="flex items-center justify-between border-b border-white/10 pb-2">
+              <div class="flex items-center gap-2">
+                <span class="w-6 h-6 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center text-xs">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </span>
+                <h4 class="text-xs font-bold uppercase tracking-wider text-purple-200">Contre-Offensive Commerciale Gemini 3 Flash</h4>
+              </div>
+              <button id="btnCopyAiObjection" class="text-xs text-slate-300 hover:text-white flex items-center gap-1 transition">
+                <i class="fa-regular fa-copy"></i> Copier
+              </button>
+            </div>
+            <div id="aiObjectionContent" class="text-xs sm:text-sm text-slate-200 space-y-2 leading-relaxed">
+              <!-- Content generated by Gemini -->
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 flex justify-between">
+          <button data-goto="tab-discovery" class="goto-tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-5 py-2.5 rounded-xl transition flex items-center gap-2 text-sm">
+            <i class="fa-solid fa-arrow-left"></i> Retour Découverte
+          </button>
+          <button data-goto="tab-scorecard" class="goto-tab-btn bg-slack-darkAubergine hover:bg-slack-plum text-white font-medium px-6 py-2.5 rounded-xl shadow transition flex items-center gap-2 text-sm">
+            Passer à la Matrice d'Audit <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- TAB 3: MATRICE DE MATURITÉ & AUDIT EXPRESS -->
+    <!-- ================================================================= -->
+    <section id="tab-scorecard" class="tab-content hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+          <div>
+            <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center text-sm font-bold">3</span>
+              Matrice de Notation & Diagnostic de Maturité
+            </h2>
+            <p class="text-sm text-slate-500 mt-1">Évaluez la maturité collaborative sur 4 piliers critiques pour justifier le forfait Slack recommandé.</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="text-right">
+              <div class="text-xs text-slate-400 font-semibold uppercase">Score Global</div>
+              <div class="text-2xl font-black text-slack-aubergine"><span id="scorecardTotalDisplay">12</span> <span class="text-sm text-slate-400 font-normal">/ 20</span></div>
+            </div>
+            <span id="scorecardStatusBadge" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-amber-200 text-amber-900">
+              Friction de Croissance
+            </span>
+          </div>
+        </div>
+
+        <!-- 4 Pillars Sliders Grid -->
+        <div class="space-y-4 my-6" id="scorecardCriteriaContainer">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Automated Forfait Recommendation Banner -->
+        <div class="rounded-2xl p-5 border-2 border-slack-aubergine bg-purple-50/60 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-black uppercase tracking-wider text-slack-aubergine bg-purple-100 px-2 py-0.5 rounded">Diagnostic Automatisé</span>
+              <span id="recommendedPlanTag" class="text-xs font-bold text-slate-600 bg-white px-2 py-0.5 rounded border border-slate-200">Standard PME & ETI</span>
+            </div>
+            <h4 id="recommendedPlanTitle" class="text-base font-black text-slate-900">Slack Business+ (Recommandation Maîtresse)</h4>
+            <p id="recommendedPlanSubtitle" class="text-xs text-slate-600">Indispensable pour l'intégration SSO SAML, la synchronisation SCIM des départs, les exports légaux et le SLA 99,99%.</p>
+          </div>
+          <button data-goto="tab-roi" class="goto-tab-btn flex-shrink-0 bg-slack-darkAubergine hover:bg-slack-plum text-white font-semibold text-xs px-4 py-2.5 rounded-xl shadow-sm transition flex items-center gap-2">
+            Configurer le ROI de ce Forfait <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+
+        <div class="mt-6 flex justify-between">
+          <button data-goto="tab-objections" class="goto-tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-5 py-2.5 rounded-xl transition flex items-center gap-2 text-sm">
+            <i class="fa-solid fa-arrow-left"></i> Objections
+          </button>
+          <button data-goto="tab-roi" class="goto-tab-btn bg-slack-darkAubergine hover:bg-slack-plum text-white font-medium px-6 py-2.5 rounded-xl shadow transition flex items-center gap-2 text-sm">
+            Chiffrer le ROI Financier <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- TAB 4: CALCULATEUR DE RENTABILITÉ & BUSINESS CASE (ROI) -->
+    <!-- ================================================================= -->
+    <section id="tab-roi" class="tab-content hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+          <div>
+            <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm font-bold">4</span>
+              Calculateur de Rentabilité & Modèle ROI
+            </h2>
+            <p class="text-sm text-slate-500 mt-1">Démontrez de façon irréfutable que le coût de licence est amorti dès la première semaine.</p>
+          </div>
+          <span class="badge-pill bg-emerald-50 text-emerald-700 border border-emerald-200">
+            <i class="fa-solid fa-arrow-trend-up mr-1.5"></i> Business Case CFO
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 my-6">
+          <!-- Paramètres du Modèle -->
+          <div class="lg:col-span-5 space-y-5 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-sliders text-slack-aubergine"></i> Hypothèses de Déploiement
+            </h3>
+
+            <!-- Users Slider -->
+            <div>
+              <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                <label>Nombre de collaborateurs déployés</label>
+                <span id="displayUserCount" class="text-slack-aubergine font-bold">50 personnes</span>
+              </div>
+              <input type="range" id="inputUserCount" min="5" max="500" step="5" value="50" class="w-full accent-slack-aubergine cursor-pointer">
+            </div>
+
+            <!-- Hourly Rate Slider -->
+            <div>
+              <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                <label>Coût horaire moyen chargé (€/h)</label>
+                <span id="displayHourlyRate" class="text-slack-aubergine font-bold">45 € / heure</span>
+              </div>
+              <input type="range" id="inputHourlyRate" min="25" max="150" step="5" value="45" class="w-full accent-slack-aubergine cursor-pointer">
+            </div>
+
+            <!-- Minutes Saved Slider -->
+            <div>
+              <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                <label>Temps récupéré par jour / personne</label>
+                <span id="displayMinutesSaved" class="text-slack-aubergine font-bold">25 minutes / jour</span>
+              </div>
+              <input type="range" id="inputMinutesSaved" min="10" max="60" step="5" value="25" class="w-full accent-slack-aubergine cursor-pointer">
+              <p class="text-[11px] text-slate-400 mt-1 italic">Benchmark : 20 min (réduction réunions) + 15 min (recherche d'infos).</p>
+            </div>
+
+            <!-- Forfait Slack Selector -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-2">Forfait Slack Retenu</label>
+              <div class="grid grid-cols-3 gap-2">
+                <button data-plan="pro" data-price="6.75" class="plan-select-btn p-2.5 rounded-xl border text-center transition bg-white border-slate-300 text-slate-700 hover:border-slack-aubergine">
+                  <span class="block text-xs font-bold">Slack Pro</span>
+                  <span class="block text-xs text-slate-500 font-medium">6,75 €</span>
+                </button>
+                <button data-plan="business" data-price="11.75" class="plan-select-btn p-2.5 rounded-xl border-2 text-center transition bg-purple-50 border-slack-aubergine text-slack-darkAubergine shadow-sm ring-1 ring-slack-aubergine/30">
+                  <span class="block text-xs font-bold">Business+</span>
+                  <span class="block text-xs text-slate-500 font-medium">11,75 €</span>
+                </button>
+                <button data-plan="enterprise" data-price="22.00" class="plan-select-btn p-2.5 rounded-xl border text-center transition bg-white border-slate-300 text-slate-700 hover:border-slack-aubergine">
+                  <span class="block text-xs font-bold">Grid Ent.</span>
+                  <span class="block text-xs text-slate-500 font-medium">~22 €</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Résultats Financiers Dashboard -->
+          <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+              <div class="bg-gradient-to-br from-purple-900 to-slack-darkAubergine text-white p-5 rounded-2xl shadow-sm">
+                <span class="text-xs text-purple-200 font-medium uppercase tracking-wider block">Gains Bruts Productivité</span>
+                <div class="text-2xl sm:text-3xl font-black mt-1" id="kpiGrossSavingsAnnual">97 500 €</div>
+                <span class="text-xs text-purple-300 block mt-1" id="kpiGrossSavingsMonthly">soit 8 125 € / mois</span>
+              </div>
+              <div class="bg-gradient-to-br from-emerald-600 to-teal-700 text-white p-5 rounded-2xl shadow-sm">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-emerald-100 font-medium uppercase tracking-wider">Retour (ROI)</span>
+                  <span id="roiMultiplierBadge" class="text-[11px] font-bold bg-white/20 px-2 py-0.5 rounded-full">13.8x la mise</span>
+                </div>
+                <div class="text-2xl sm:text-3xl font-black mt-1" id="kpiRoiPercentage">+1283 %</div>
+                <span class="text-xs text-emerald-200 block mt-1">Rendement de l'investissement</span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3 p-4 bg-slate-50 rounded-2xl border border-slate-200 text-center">
+              <div>
+                <span class="text-[11px] text-slate-400 block font-semibold">Investissement Annuel</span>
+                <span id="kpiSlackCostAnnual" class="text-base font-bold text-rose-600 mt-0.5 block">7 050 €</span>
+                <span id="kpiSlackCostMonthly" class="text-[11px] text-slate-400">588 € / mois</span>
+              </div>
+              <div class="border-x border-slate-200">
+                <span class="text-[11px] text-slate-400 block font-semibold">Valeur Nette Récupérée</span>
+                <span id="kpiNetSavingsAnnual" class="text-base font-bold text-emerald-600 mt-0.5 block">+90 450 € / an</span>
+                <span class="text-[11px] text-slate-400">bénéfice direct</span>
+              </div>
+              <div>
+                <span class="text-[11px] text-slate-400 block font-semibold">Délai d'Amortissement</span>
+                <span id="kpiPaybackPeriod" class="text-base font-bold text-slack-aubergine mt-0.5 block">3.2 jours / mois</span>
+                <span class="text-[11px] text-slate-400">rentabilisé immédiatement</span>
+              </div>
+            </div>
+
+            <!-- Inaction Quote Box -->
+            <div class="p-4 rounded-xl bg-amber-50 border border-amber-200 flex items-start gap-3 text-xs text-amber-900">
+              <i class="fa-solid fa-triangle-exclamation text-amber-600 mt-0.5 text-sm"></i>
+              <div>
+                <strong class="font-bold">Coût de l'inaction estimé :</strong> Vos équipes perdent actuellement l'équivalent de <span id="quoteWasteAmount" class="font-bold text-amber-950">8 125 €</span> chaque mois en inefficacités chroniques, emails en copie et réunions évitables.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 flex justify-between">
+          <button data-goto="tab-scorecard" class="goto-tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-5 py-2.5 rounded-xl transition flex items-center gap-2 text-sm">
+            <i class="fa-solid fa-arrow-left"></i> Matrice d'Audit
+          </button>
+          <button data-goto="tab-proposal" class="goto-tab-btn bg-slack-darkAubergine hover:bg-slack-plum text-white font-medium px-6 py-2.5 rounded-xl shadow transition flex items-center gap-2 text-sm">
+            Générer la Proposition Commerciale <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- TAB 5: PROPOSITION COMMERCIALE STRATÉGIQUE (CANVAS & EXPORT) -->
+    <!-- ================================================================= -->
+    <section id="tab-proposal" class="tab-content hidden space-y-6">
+      
+      <!-- Top Actions Bar -->
+      <div class="no-print flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+        <div>
+          <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-file-contract text-slack-aubergine"></i> Restitution Prête pour le Comité de Direction
+          </h2>
+          <p class="text-xs text-slate-500">Document synthétique consolidant la découverte, la note d'audit, le modèle ROI et la recommandation d'offre.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button id="btnAiDraftExecutiveSummary" class="px-4 py-2 text-xs font-semibold rounded-xl bg-gradient-to-r from-purple-700 to-slack-darkAubergine hover:from-purple-800 hover:to-slack-plum text-white transition flex items-center gap-1.5 shadow-sm border border-purple-400/30">
+            <i class="fa-solid fa-sparkles text-amber-300"></i> <span id="btnAiDraftSummaryText">Rédiger Synthèse avec Gemini</span>
+          </button>
+          <button id="btnCopyProposal" class="px-4 py-2 text-xs font-semibold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 transition flex items-center gap-1.5 border border-slate-200">
+            <i class="fa-regular fa-copy"></i> Copier le Texte Slack
+          </button>
+          <button id="btnPrintProposal" class="px-4 py-2 text-xs font-semibold rounded-xl bg-slack-darkAubergine hover:bg-slack-plum text-white transition flex items-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-file-arrow-down"></i> <span id="btnPrintProposalText">Exporter en PDF</span>
+          </button>
+          <button id="btnNativePrint" title="Imprimer via le dialogue du navigateur" class="px-3 py-2 text-xs font-semibold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1 border border-slate-200">
+            <i class="fa-solid fa-print"></i> Imprimer
+          </button>
+        </div>
+      </div>
+
+      <!-- Printable Commercial Proposal Document -->
+      <div id="proposalPrintableArea" class="proposal-container bg-white rounded-2xl p-8 sm:p-12 shadow-sm border border-slate-200 space-y-8 text-slate-800">
+        
+        <!-- Header Document -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6 border-b border-slate-200 pb-8">
+          <div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs font-black uppercase tracking-widest text-slack-aubergine bg-purple-50 px-2.5 py-1 rounded border border-purple-200">Rapport Stratégique Collaboratif</span>
+              <span class="text-xs text-slate-400">• Confidentiel</span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-black text-slate-900" id="propClientHeading">Plan de Modernisation Slack — Acme Corp</h1>
+            <p class="text-sm text-slate-500 mt-1">Préparé par le Consultant Senior Slack • Référence : <span id="propDateDisplay"></span></p>
+          </div>
+          <div class="text-right sm:border-l sm:border-slate-200 sm:pl-6">
+            <div class="text-xs text-slate-400 uppercase font-semibold">Client Cible</div>
+            <div class="font-bold text-slate-800 text-sm" id="propClientName">Acme Corp</div>
+            <div class="text-xs text-slate-500" id="propClientContact">Marc Dupont (VP Operations)</div>
+            <div class="text-xs text-slate-400" id="propClientSector">Tech / SaaS / ESN</div>
+          </div>
+        </div>
+
+        <!-- 1. Synthèse Exécutive & Diagnostic de Douleur -->
+        <div class="space-y-3">
+          <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-2">
+            <span class="w-6 h-6 rounded-md bg-slack-darkAubergine text-white text-xs flex items-center justify-center font-bold">1</span>
+            Diagnostic Opérationnel & Coût de l'Inaction
+          </h3>
+          <p class="text-sm text-slate-600 leading-relaxed" id="propExecutiveSummary">
+            L'audit mené auprès de vos équipes révèle une déperdition d'efficacité liée aux communications cloisonnées par email, à la fragmentation des échanges avec les partenaires externes et aux validations manuelles chronophages. Sans restructuration, cette inertie impacte directement l'agilité et le bien-être opérationnel de vos collaborateurs.
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2" id="propKeyPainPointsList">
+            <!-- Dynamic pain points cards -->
+          </div>
+        </div>
+
+        <!-- 2. Scorecard de Maturité & Analyse des Risques -->
+        <div class="space-y-3">
+          <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-2">
+            <span class="w-6 h-6 rounded-md bg-slack-darkAubergine text-white text-xs flex items-center justify-center font-bold">2</span>
+            Matrice de Maturité Collaborative (Score : <span id="propScoreValue" class="text-slack-aubergine font-black">12/20</span>)
+          </h3>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="propScoreCardsGrid">
+            <!-- Rendered 4 pillars -->
+          </div>
+        </div>
+
+        <!-- 3. Modèle Financier & Retour sur Investissement (ROI) -->
+        <div class="space-y-3">
+          <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-2">
+            <span class="w-6 h-6 rounded-md bg-slack-green text-white text-xs flex items-center justify-center font-bold">3</span>
+            Validation du Modèle Financier & Business Case
+          </h3>
+          
+          <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+              <div class="border-r border-slate-200 last:border-none">
+                <div class="text-xs text-slate-500">Périmètre Déployé</div>
+                <div class="text-lg font-bold text-slate-900 mt-1" id="propPropUsers">50 utilisateurs</div>
+              </div>
+              <div class="border-r border-slate-200 last:border-none">
+                <div class="text-xs text-slate-500">Investissement Annuel</div>
+                <div class="text-lg font-bold text-rose-600 mt-1" id="propPropCost">7 050 €</div>
+              </div>
+              <div class="border-r border-slate-200 last:border-none">
+                <div class="text-xs text-slate-500">Gains Nets de Productivité</div>
+                <div class="text-lg font-bold text-emerald-600 mt-1" id="propPropNet">90 450 € / an</div>
+              </div>
+              <div>
+                <div class="text-xs text-slate-500">Période d'Amortissement</div>
+                <div class="text-lg font-bold text-slack-aubergine mt-1" id="propPropPayback">3.2 jours</div>
+              </div>
+            </div>
+          </div>
+          <p class="text-xs text-slate-500 italic mt-1">
+            * Hypothèse : économie de <span id="propPropMinutes">25</span> minutes/jour/collaborateur sur la base d'un coût horaire chargé de <span id="propPropRate">45</span> €/h.
+          </p>
+        </div>
+
+        <!-- 4. Recommandation Forfait & Architecture de Déploiement -->
+        <div class="space-y-4">
+          <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-2">
+            <span class="w-6 h-6 rounded-md bg-slack-plum text-white text-xs flex items-center justify-center font-bold">4</span>
+            Prescription Technique du Forfait Slack Recommandé
+          </h3>
+
+          <div class="p-6 rounded-2xl border-2 border-slack-aubergine bg-purple-50/40 relative">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-black uppercase text-slack-aubergine bg-purple-100 px-2 py-0.5 rounded">Forfait Retenu</span>
+                  <h4 class="text-xl font-black text-slate-900" id="propPlanName">Slack Business+</h4>
+                </div>
+                <p class="text-xs text-slate-600 mt-1" id="propPlanDetailDesc">
+                  Forfait requis pour garantir la conformité des données (exports totaux), le provisioning automatique d'identités (SSO SAML / Okta / Azure AD & SCIM) et un SLA garanti à 99,99 %.
+                </p>
+              </div>
+              <div class="text-right">
+                <div class="text-2xl font-black text-slack-aubergine" id="propPlanPriceDisplay">11,75 € <span class="text-xs font-normal text-slate-500">/util./mois</span></div>
+                <div class="text-xs text-slate-500">Facturation annuelle</div>
+              </div>
+            </div>
+
+            <!-- Features checklist for this plan -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-5 pt-4 border-t border-purple-200/70" id="propPlanFeaturesList">
+              <!-- Rendered features -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Plan d'Action & Prochaine Étape (Closing Pilote 30 Jours) -->
+        <div class="space-y-3 pt-2">
+          <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-2">
+            <span class="w-6 h-6 rounded-md bg-amber-500 text-white text-xs flex items-center justify-center font-bold">5</span>
+            Feuille de Route & Lancement du Pilote Cadré (30 Jours)
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <span class="font-bold text-slate-800 block mb-1">Semaine 1 : Cadrage & Gouvernance</span>
+              <p class="text-slate-500">Mise en place de la nomenclature des canaux (#team-, #proj-), configuration SSO/SCIM et formation de l'équipe pilote.</p>
+            </div>
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <span class="font-bold text-slate-800 block mb-1">Semaine 2-3 : Automatisation & Partenaires</span>
+              <p class="text-slate-500">Création des 3 premiers flux Workflow Builder et ouverture de 2 canaux Slack Connect avec partenaires clés.</p>
+            </div>
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <span class="font-bold text-slate-800 block mb-1">Semaine 4 : Bilan ROI & Déploiement</span>
+              <p class="text-slate-500">Mesure des gains de temps réels, enquête d'adoption et extension à l'ensemble de l'organisation.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sign-off Pitch Block -->
+        <div class="bg-slack-darkAubergine text-white p-6 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <div class="text-xs font-bold uppercase tracking-wider text-emerald-400">Prêt pour l'action</div>
+            <div class="text-sm font-semibold mt-0.5">« Validons dès aujourd'hui la mise en place du pilote pour tester le gain de temps en conditions réelles. »</div>
+          </div>
+          <div class="text-xs text-slate-300 font-medium">
+            Signature & Accord de Démarrage : ______________________
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // =========================================================================
+    // STATE & REPOSITORY DATA
+    // =========================================================================
+    const state = {
+      client: {
+        name: "Acme Corp",
+        contact: "Marc Dupont (VP Operations)",
+        sector: "Tech / SaaS / ESN",
+        customNotes: ""
+      },
+      discoveryAnswers: {},
+      scorecard: {
+        asyncCulture: 3,
+        externalCollab: 3,
+        automation: 2,
+        securityIAM: 4
+      },
+      roi: {
+        users: 50,
+        hourlyRate: 45,
+        minutesSaved: 25,
+        plan: "business", // pro, business, enterprise
+        planPrice: 11.75
+      },
+      activeTab: "tab-discovery"
+    };
+
+    // 10 Discovery Questions Framework
+    const discoveryQuestions = [
+      {
+        id: "q1",
+        pillar: "Gouvernance & Volumétrie",
+        icon: "fa-users",
+        badge: "Organisation",
+        question: "Combien de collaborateurs travaillent au quotidien, et quel est le ratio entre équipes sédentaires, nomades et freelances ?",
+        why: "Révèle le besoin de flexibilité asynchrone, d'accès mobile et de gestion des accès invités ou Slack Connect.",
+        defaultAnswer: "80 personnes (40 sédentaires, 25 nomades/commerciaux, 15 freelances et partenaires réguliers)."
+      },
+      {
+        id: "q2",
+        pillar: "Stack & Silos",
+        icon: "fa-cubes",
+        badge: "Intégrations",
+        question: "Quels sont vos logiciels clés aujourd'hui (Google/M365, Salesforce, Jira, GitHub) et à quel point sont-ils connectés entre eux ?",
+        why: "Prouve que le basculement permanent d'un onglet à l'autre fait perdre jusqu'à 30% du temps d'attention.",
+        defaultAnswer: "Google Workspace + Salesforce pour les commerciaux + Jira pour les développeurs. Zéro passerelle directe."
+      },
+      {
+        id: "q3",
+        pillar: "Collaboration Externe",
+        icon: "fa-handshake",
+        badge: "Slack Connect",
+        question: "Comment échangez-vous actuellement avec vos clients, prestataires et agences partenaires ?",
+        why: "Identifie le Shadow IT (WhatsApp pro non sécurisé) ou les boucles d'emails géantes avec des pièces jointes obsolètes.",
+        defaultAnswer: "Emails en boucle, et beaucoup de groupes WhatsApp créés à l'arrache sur les téléphones persos."
+      },
+      {
+        id: "q4",
+        pillar: "Bruit Numérique",
+        icon: "fa-envelope-open-text",
+        badge: "Infobésité",
+        question: "Combien d'emails internes non lus vos managers ont-ils en attente chaque matin, et combien de personnes sont en copie 'pour info' ?",
+        why: "Quantifie le gaspillage de temps cognitif lié aux emails internes descendants inutiles.",
+        defaultAnswer: "Environ 60 à 80 emails par jour, 80% sont des boucles d'information où personne ne sait qui doit trancher."
+      },
+      {
+        id: "q5",
+        pillar: "Capitalisation des Connaissances",
+        icon: "fa-book-bookmark",
+        badge: "Historique",
+        question: "Quand un nouveau collaborateur arrive sur un projet, combien de temps lui faut-il pour reconstituer l'historique des décisions ?",
+        why: "Met en avant les Canvas Slack et l'historique permanent et consultable des canaux projet.",
+        defaultAnswer: "Au moins 1 à 2 semaines pour interroger les collègues et demander des transferts d'emails."
+      },
+      {
+        id: "q6",
+        pillar: "Réunionite & Synchrone",
+        icon: "fa-video",
+        badge: "Huddles / Clips",
+        question: "Quel est le réflexe de vos équipes pour régler un détail de 3 minutes ? (Bloquer une réunion de 30 min sur Meet/Teams ?)",
+        why: "Justifie l'introduction des Huddles instantanés et des clips audio/vidéo asynchrones.",
+        defaultAnswer: "Créer un créneau de 30 minutes sur Google Calendar, ce qui hache complètement les journées de travail."
+      },
+      {
+        id: "q7",
+        pillar: "Processus Répétitifs",
+        icon: "fa-gears",
+        badge: "Workflows",
+        question: "Comment sont traitées vos demandes récurrentes : onboarding arrivant, demandes de congés, tickets IT de niveau 1 ?",
+        why: "Ouvre la porte à l'automatisation sans code via le Workflow Builder Slack.",
+        defaultAnswer: "Formulaires éparpillés, relances par email ou post-it virtuels sans traçabilité."
+      },
+      {
+        id: "q8",
+        pillar: "Gestion des Incidents",
+        icon: "fa-fire-extinguisher",
+        badge: "Temps Réel",
+        question: "En cas d'incident client ou d'urgence technique, où se rassemble la cellule de crise ?",
+        why: "Met en valeur la création instantanée d'un canal d'incident dédié relié aux systèmes d'alerte (PagerDuty, Datadog).",
+        defaultAnswer: "On s'appelle au téléphone et on ouvre un doc Word partagé tant bien que mal."
+      },
+      {
+        id: "q9",
+        pillar: "Identité & Sécurité",
+        icon: "fa-id-card-clip",
+        badge: "Sécurité & IAM",
+        question: "Comment gérez-vous l'offboarding d'un collaborateur ou freelance ? Ses accès aux canaux de discussion sont-ils révoqués en un clic ?",
+        why: "Prouve l'exigence absolue du SSO SAML et du provisioning SCIM (Forfait Business+ ou Enterprise).",
+        defaultAnswer: "Manuel. Parfois on oublie de supprimer un freelance d'un outil pendant 3 mois."
+      },
+      {
+        id: "q10",
+        pillar: "Conformité Légale",
+        icon: "fa-file-shield",
+        badge: "Auditabilité",
+        question: "Quelles sont vos obligations en matière de rétention des échanges, d'audit et d'exportation légale en cas de litige ?",
+        why: "Élimine d'office le forfait Slack Pro ou Gratuit si des exports complets et DLP sont nécessaires.",
+        defaultAnswer: "Nos clients grands comptes nous demandent la certification ISO et des sauvegardes strictes."
+      }
+    ];
+
+    // Objections Killers Data
+    const objectionKillers = [
+      {
+        id: "teams",
+        title: "« On a déjà Teams inclus gratuitement dans notre suite Office 365. »",
+        badge: "Objection Fréquente #1",
+        color: "rose",
+        summary: "Teams est un bloc-notes vidéo greffé sur SharePoint. Slack est le système d'exploitation de productivité de l'entreprise.",
+        counterPitch: "Teams est perçu comme 'gratuit' mais coûte des milliers d'euros en désengagement. Nos clients constatent plus de 85% d'adoption réelle sur Slack contre moins de 40% sur Teams où l'email reste roi. Slack Connect évite le cloisonnement avec vos partenaires, et le Workflow Builder rend les équipes 100% autonomes sans dépendre de l'IT.",
+        goldenQuestion: "Combien d'heures par semaine vos équipes perdent-elles à jongler entre les silos de Teams et vos autres outils ?"
+      },
+      {
+        id: "chat",
+        title: "« Slack, c'est juste un chat récréatif qui va déconcentrer les équipes. »",
+        badge: "Culture & Focus",
+        color: "amber",
+        summary: "Un Slack mal gouverné est un café du commerce. Un Slack cadré est une machine d'exécution asynchrone.",
+        counterPitch: "Grâce aux Canvases intégrés, aux fils de discussion stricts (Threads) et aux statuts de concentration, Slack fait chuter de 30% les interruptions. De plus, un Reacji de validation remplace 10 emails d'acquittement 'Merci bien reçu'.",
+        goldenQuestion: "Préférez-vous 80 emails désordonnés par jour ou un fil de décision structuré et searchable en 2 secondes ?"
+      },
+      {
+        id: "price",
+        title: "« C'est trop cher par collaborateur par mois. »",
+        badge: "Rentabilité",
+        color: "emerald",
+        summary: "Le coût de la licence est amorti dès le 4e jour du mois grâce aux minutes récupérées.",
+        counterPitch: "Pour un forfait à 11,75€/mois, si un salarié gagne seulement 20 minutes par jour en évitant les réunions inutiles et en trouvant ses documents instantanément, l'investissement génère plus de 1 800€ de valeur nette par personne et par an.",
+        goldenQuestion: "Si nous vous prouvons que le pilote est rentable dès sa première semaine, êtes-vous prêt à tester ?"
+      },
+      {
+        id: "infobesity",
+        title: "« On a peur d'avoir trop de notifications et d'être submergés. »",
+        badge: "Gouvernance",
+        color: "sky",
+        summary: "L'infobésité vient de l'absence de charte, pas de l'outil.",
+        counterPitch: "Nous mettons en place une nomenclature rigoureuse (#annonces-, #proj-, #team-) et nous bannissons l'usage anarchique du @channel. Avec les plages 'Ne pas déranger' et les résumés asynchrones, vos collaborateurs retrouvent des créneaux de travail profond sans interruption.",
+        goldenQuestion: "Avez-vous aujourd'hui une charte claire pour régir les urgences sur vos emails ?"
+      }
+    ];
+
+    // Maturity Criteria definition
+    const maturityCriteria = [
+      {
+        id: "asyncCulture",
+        title: "1. Culture Asynchrone & Réunions",
+        desc: "Capacité à collaborer sans réunions obligatoires permanentes.",
+        levels: {
+          1: "Réunions pour tout, zéro documentation, sollicitation h24.",
+          3: "Quelques échanges chat, mais réflexe Calendar systématique.",
+          5: "Clips vidéo/audio, Canvases à jour, décisions en Threads."
+        }
+      },
+      {
+        id: "externalCollab",
+        title: "2. Échanges avec l'Écosystème Externe",
+        desc: "Fluidité des échanges avec clients, freelances et fournisseurs.",
+        levels: {
+          1: "Chaines d'emails infinies, pièces jointes lourdes, WhatsApp perso.",
+          3: "Dossiers Drive partagés ponctuels, mais échanges par email.",
+          5: "Canaux Slack Connect standardisés avec les partenaires clés."
+        }
+      },
+      {
+        id: "automation",
+        title: "3. Automatisation des Processus",
+        desc: "Niveau d'élimination des micro-tâches répétitives sans code.",
+        levels: {
+          1: "Processus 100% manuels, ressaisies, sollicitations par email.",
+          3: "Quelques zaps ou alertes webhook, mais utilisation fragmentée.",
+          5: "Workflows no-code intégrés (onboarding, approbations, alertes)."
+        }
+      },
+      {
+        id: "securityIAM",
+        title: "4. Sécurité, Gouvernance & Identités",
+        desc: "Maîtrise des accès, audits et conformité des données.",
+        levels: {
+          1: "Comptes individuels avec mot de passe, offboarding non sécurisé.",
+          3: "2FA activé, mais révocation et exports manuels fastidieux.",
+          5: "SSO SAML / Okta / Azure AD, SCIM automatique, exports conformes."
+        }
+      }
+    ];
+
+    // Helper to format currency
+    function formatEUR(val) {
+      return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(val);
+    }
+
+    // Convert markdown bold and paragraphs to clean HTML
+    function formatMarkdownToHtml(markdownText) {
+      if (!markdownText) return "";
+      return markdownText
+        .split(/\n\n+/)
+        .map(paragraph => {
+          const cleanP = paragraph
+            .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900">$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
+            .replace(/\n/g, '<br/>');
+          return `<p class="leading-relaxed mb-2 last:mb-0">${cleanP}</p>`;
+        })
+        .join("");
+    }
+
+    // Deterministic high-level fallback generator if the external API call fails
+    function generateFallbackExecutiveSummary(clientName, sector, contact, roi, totalScore) {
+      const planName = state.roi.plan === "pro" ? "Slack Pro" : (state.roi.plan === "business" ? "Slack Business+" : "Slack Enterprise Grid");
+      return `L'audit opérationnel mené auprès de ${clientName} (${sector}) met en lumière une friction collaborative substantielle évaluée à **${totalScore}/20**, marquée par une dispersion des communications entre emails internes et outils non connectés. Cette organisation génère une perte d'attention quotidienne chiffrée à au moins ${state.roi.minutesSaved} minutes par collaborateur, pesant directement sur la réactivité des équipes et la rétention de l'information stratégique.
+
+Pour endiguer ce coût de l'inaction estimé à **${formatEUR(roi.annualGrossTotal || 97500)} par an**, le déploiement du forfait **${planName}** pour les **${roi.users} collaborateurs** ciblés offre une rentabilisation immédiate en seulement **${roi.paybackDays} jours par mois**. L'activation conjointe du SSO sécurisé, de Slack Connect pour les partenaires externes et du Workflow Builder permettra de dégager un bénéfice net annuel de **+${formatEUR(roi.annualNetTotal)}** (ROI de **+${roi.roiPercent}%**). La mise en place d'un pilote cadré de 30 jours est préconisée pour sécuriser cette trajectoire d'efficience.`;
+    }
+
+    // Helper to call the Gemini API using gemini-3-flash-preview
+    async function callGeminiApi({ systemPrompt, userPrompt, isJson = false, responseSchema = null }) {
+      const apiKey = ""; // Canvas runtime injects the key automatically
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+      const payload = {
+        contents: [{ role: "user", parts: [{ text: userPrompt }] }],
+        systemInstruction: { parts: [{ text: systemPrompt }] }
+      };
+
+      if (isJson && responseSchema) {
+        payload.generationConfig = {
+          responseMimeType: "application/json",
+          responseSchema: responseSchema
+        };
+      }
+
+      // Retry mechanism with exponential backoff (1s, 2s, 4s)
+      let delay = 1000;
+      for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+
+          if (!response.ok) {
+            const errBody = await response.text().catch(() => "");
+            throw new Error(`Gemini API error (${response.status}): ${errBody}`);
+          }
+
+          const result = await response.json();
+          const candidate = result?.candidates?.[0];
+          const parts = candidate?.content?.parts || [];
+          const text = parts.map(p => p.text).filter(Boolean).join("\n");
+          if (!text) {
+            throw new Error("Invalid or empty response format from Gemini API");
+          }
+          return text;
+        } catch (err) {
+          if (attempt === 2) {
+            throw err;
+          }
+          await new Promise(resolve => setTimeout(resolve, delay));
+          delay *= 2;
+        }
+      }
+    }
+
+    // Helper for toast messages
+    function showToast(message, iconClass = "fa-check", isError = false) {
+      const toast = document.getElementById("toastNotification");
+      const msg = document.getElementById("toastMessage");
+      const icon = document.getElementById("toastIcon");
+      
+      msg.textContent = message;
+      icon.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+      
+      if (isError) {
+        icon.className = "w-8 h-8 rounded-full bg-red-500/20 text-rose-400 flex items-center justify-center flex-shrink-0";
+      } else {
+        icon.className = "w-8 h-8 rounded-full bg-slack-green/20 text-slack-green flex items-center justify-center flex-shrink-0";
+      }
+
+      toast.classList.remove("translate-y-24", "opacity-0");
+      toast.classList.add("translate-y-0", "opacity-100");
+
+      setTimeout(() => {
+        toast.classList.add("translate-y-24", "opacity-0");
+        toast.classList.remove("translate-y-0", "opacity-100");
+      }, 3200);
+    }
+
+    function renderDiscoveryQuestions() {
+      const container = document.getElementById("discoveryQuestionsContainer");
+      container.innerHTML = "";
+
+      discoveryQuestions.forEach((q, idx) => {
+        const currentAnswer = state.discoveryAnswers[q.id] || "";
+        const card = document.createElement("div");
+        card.className = "bg-slate-50 hover:bg-slate-50/90 border border-slate-200/80 rounded-xl p-4 sm:p-5 transition shadow-sm space-y-3";
+        card.innerHTML = `
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div class="flex items-center gap-2.5">
+              <div class="w-7 h-7 rounded-lg bg-white border border-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold shadow-xs">
+                ${idx + 1}
+              </div>
+              <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">${q.pillar}</span>
+            </div>
+            <span class="badge-pill bg-sky-100/80 text-sky-800 border border-sky-200 self-start sm:self-auto">
+              <i class="fa-solid ${q.icon} mr-1"></i> ${q.badge}
+            </span>
+          </div>
+
+          <div>
+            <h4 class="text-sm font-bold text-slate-900 leading-snug">« ${q.question} »</h4>
+            <p class="text-xs text-slate-500 mt-1 italic flex items-center gap-1.5">
+              <i class="fa-regular fa-compass text-slate-400"></i> ${q.why}
+            </p>
+          </div>
+
+          <div>
+            <textarea data-qid="${q.id}" rows="2" placeholder="Saisir la réponse du prospect ou ses verbatim..." class="discovery-input w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:ring-2 focus:ring-slack-aubergine/40 focus:outline-none transition">${currentAnswer}</textarea>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      // Bind listener
+      document.querySelectorAll(".discovery-input").forEach(input => {
+        input.addEventListener("input", (e) => {
+          const qid = e.target.getAttribute("data-qid");
+          state.discoveryAnswers[qid] = e.target.value;
+          updateDiscoveryProgress();
+          updateProposalView();
+        });
+      });
+      updateDiscoveryProgress();
+    }
+
+    function updateDiscoveryProgress() {
+      const answered = Object.values(state.discoveryAnswers).filter(v => v.trim().length > 0).length;
+      const countEl = document.getElementById("discoveryAnswerCount");
+      if (countEl) {
+        countEl.textContent = `${answered} / 10 complétées`;
+        if (answered >= 7) {
+          countEl.className = "text-xs font-bold bg-slack-green text-white px-2 py-0.5 rounded-full";
+        } else {
+          countEl.className = "text-xs font-bold bg-sky-600 text-white px-2 py-0.5 rounded-full";
+        }
+      }
+    }
+
+    function renderObjections() {
+      const container = document.getElementById("objectionsContainer");
+      container.innerHTML = "";
+
+      objectionKillers.forEach(obj => {
+        const el = document.createElement("div");
+        el.className = "bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition space-y-3 flex flex-col justify-between";
+        el.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="badge-pill bg-slate-100 text-slate-700 font-semibold border border-slate-200">${obj.badge}</span>
+              <button class="btn-copy-counter text-xs text-slack-aubergine hover:text-slack-plum font-semibold flex items-center gap-1 transition">
+                <i class="fa-regular fa-copy"></i> Copier la parade
+              </button>
+            </div>
+            <h4 class="text-sm font-black text-slate-900 leading-tight">${obj.title}</h4>
+            <p class="text-xs text-slate-500 font-medium mt-1">${obj.summary}</p>
+            
+            <div class="bg-purple-50/60 border border-purple-100 rounded-lg p-3 text-xs text-slate-800 mt-3 leading-relaxed">
+              <strong class="text-slack-darkAubergine block mb-1">🥊 Réponse Recommandée :</strong>
+              « ${obj.counterPitch} »
+            </div>
+          </div>
+
+          <div class="pt-2 border-t border-slate-100">
+            <span class="text-[11px] font-bold text-amber-700 flex items-center gap-1">
+              <i class="fa-solid fa-key"></i> Question de Rebond :
+            </span>
+            <p class="text-xs text-slate-600 italic mt-0.5">« ${obj.goldenQuestion} »</p>
+          </div>
+        `;
+
+        // Click to copy pitch
+        el.querySelector(".btn-copy-counter").addEventListener("click", () => {
+          copyToClipboard(`Parade Objection: ${obj.title}\n\nRéponse : ${obj.counterPitch}\n\nQuestion de rebond : ${obj.goldenQuestion}`);
+          showToast("Contre-argument copié dans le presse-papier !");
+        });
+
+        container.appendChild(el);
+      });
+    }
+
+    function renderScorecard() {
+      const container = document.getElementById("scorecardCriteriaContainer");
+      if (!container) return;
+      container.innerHTML = "";
+
+      maturityCriteria.forEach(c => {
+        const val = state.scorecard[c.id] || 3;
+        const div = document.createElement("div");
+        div.className = "bg-slate-50 rounded-xl p-5 border border-slate-200/80 space-y-3";
+        div.innerHTML = `
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h4 class="text-sm font-bold text-slate-900">${c.title}</h4>
+              <p class="text-xs text-slate-500">${c.desc}</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-slate-500">Niveau :</span>
+              <span id="scoreVal_${c.id}" class="text-sm font-black bg-white border border-slate-300 text-slate-900 px-2.5 py-0.5 rounded-md shadow-xs">${val} / 5</span>
+            </div>
+          </div>
+
+          <input type="range" min="1" max="5" step="1" value="${val}" data-cid="${c.id}" class="score-slider w-full accent-slack-aubergine cursor-pointer">
+
+          <div class="grid grid-cols-3 gap-2 text-[11px] text-slate-500 pt-1">
+            <div class="bg-white p-2 rounded-lg border border-slate-200">
+              <strong class="text-rose-600 block mb-0.5">1-2 : Critique</strong>
+              ${c.levels[1]}
+            </div>
+            <div class="bg-white p-2 rounded-lg border border-slate-200">
+              <strong class="text-amber-600 block mb-0.5">3-4 : En transition</strong>
+              ${c.levels[3]}
+            </div>
+            <div class="bg-white p-2 rounded-lg border border-slate-200">
+              <strong class="text-emerald-600 block mb-0.5">5 : Optimisé</strong>
+              ${c.levels[5]}
+            </div>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      // Bind listeners
+      document.querySelectorAll(".score-slider").forEach(slider => {
+        slider.addEventListener("input", (e) => {
+          const cid = e.target.getAttribute("data-cid");
+          state.scorecard[cid] = parseInt(e.target.value, 10);
+          const scoreEl = document.getElementById(`scoreVal_${cid}`);
+          if (scoreEl) scoreEl.textContent = `${e.target.value} / 5`;
+          recalculateScorecard();
+          updateProposalView();
+        });
+      });
+
+      recalculateScorecard();
+    }
+
+    function recalculateScorecard() {
+      const total = Object.values(state.scorecard).reduce((a, b) => a + b, 0);
+      const totalEl = document.getElementById("scorecardTotalDisplay");
+      const badgeEl = document.getElementById("scorecardStatusBadge");
+      const tabBadge = document.getElementById("tabScoreBadge");
+      
+      if (totalEl) totalEl.textContent = total;
+      if (tabBadge) tabBadge.textContent = `${total}/20`;
+
+      let status = "Friction Modérée";
+      let badgeClass = "px-2.5 py-1 text-xs font-bold rounded-lg bg-amber-200 text-amber-900";
+      let recommendedPlan = "business";
+
+      if (total <= 10) {
+        status = "Risque Opérationnel Élevé";
+        badgeClass = "px-2.5 py-1 text-xs font-bold rounded-lg bg-rose-200 text-rose-900";
+        recommendedPlan = "pro";
+      } else if (total > 10 && total <= 16) {
+        status = "Friction de Croissance";
+        badgeClass = "px-2.5 py-1 text-xs font-bold rounded-lg bg-amber-200 text-amber-900";
+        recommendedPlan = "business";
+      } else {
+        status = "Excellence & Gouvernance Entreprise";
+        badgeClass = "px-2.5 py-1 text-xs font-bold rounded-lg bg-emerald-200 text-emerald-900";
+        recommendedPlan = "enterprise";
+      }
+
+      if (badgeEl) {
+        badgeEl.textContent = status;
+        badgeEl.className = badgeClass;
+      }
+
+      // Update recommendation box
+      updateRecommendedPlanBox(recommendedPlan);
+    }
+
+    function updateRecommendedPlanBox(plan) {
+      const title = document.getElementById("recommendedPlanTitle");
+      const subtitle = document.getElementById("recommendedPlanSubtitle");
+      const tag = document.getElementById("recommendedPlanTag");
+
+      if (plan === "pro") {
+        title.textContent = "Slack Pro (Standard)";
+        subtitle.textContent = "Recommandé pour débuter : déverrouille l'historique illimité, Slack Connect et le Workflow Builder.";
+        tag.textContent = "Startups & PME (< 50)";
+      } else if (plan === "business") {
+        title.textContent = "Slack Business+ (Recommandation Maîtresse)";
+        subtitle.textContent = "Indispensable pour l'intégration SSO SAML, la synchronisation SCIM des départs, les exports légaux et le SLA 99,99%.";
+        tag.textContent = "PME & ETI (Standard de Marché)";
+      } else {
+        title.textContent = "Slack Enterprise Grid";
+        subtitle.textContent = "Indispensable pour les environnements multi-filiales, DLP strict, e-discovery, conformité HIPAA/FINRA et support 24/7.";
+        tag.textContent = "Grands Comptes & Multi-entités";
+      }
+    }
+
+    function calculateRoi() {
+      const users = state.roi.users;
+      const hourlyRate = state.roi.hourlyRate;
+      const minutesSaved = state.roi.minutesSaved;
+      const planPrice = state.roi.planPrice;
+
+      // 21.6 working days per month on average (260 working days per year)
+      const workingDaysPerMonth = 21.6;
+      const workingDaysPerYear = 260;
+
+      // Hours saved per employee per day
+      const hoursSavedPerDay = minutesSaved / 60;
+      
+      // Financial savings
+      const monthlySavingsPerUser = hoursSavedPerDay * hourlyRate * workingDaysPerMonth;
+      const annualSavingsPerUser = hoursSavedPerDay * hourlyRate * workingDaysPerYear;
+
+      const monthlyGrossTotal = monthlySavingsPerUser * users;
+      const annualGrossTotal = annualSavingsPerUser * users;
+
+      // License costs
+      const monthlySlackCost = users * planPrice;
+      const annualSlackCost = monthlySlackCost * 12;
+
+      // Net savings
+      const annualNetTotal = annualGrossTotal - annualSlackCost;
+      const monthlyNetTotal = monthlyGrossTotal - monthlySlackCost;
+
+      // ROI metrics
+      const roiPercent = annualSlackCost > 0 ? Math.round((annualNetTotal / annualSlackCost) * 100) : 0;
+      const roiMultiplier = annualSlackCost > 0 ? (annualGrossTotal / annualSlackCost).toFixed(1) : "0";
+
+      // Payback period (days of work to pay the monthly license)
+      const dailyValuePerUser = hoursSavedPerDay * hourlyRate;
+      const paybackDays = dailyValuePerUser > 0 ? (planPrice / dailyValuePerUser).toFixed(1) : "0";
+
+      // Safely update DOM elements
+      const elSlackCostAnnual = document.getElementById("kpiSlackCostAnnual");
+      if (elSlackCostAnnual) elSlackCostAnnual.textContent = formatEUR(annualSlackCost);
+      const elSlackCostMonthly = document.getElementById("kpiSlackCostMonthly");
+      if (elSlackCostMonthly) elSlackCostMonthly.textContent = formatEUR(monthlySlackCost);
+      const elGrossSavingsAnnual = document.getElementById("kpiGrossSavingsAnnual");
+      if (elGrossSavingsAnnual) elGrossSavingsAnnual.textContent = formatEUR(annualGrossTotal);
+      const elGrossSavingsMonthly = document.getElementById("kpiGrossSavingsMonthly");
+      if (elGrossSavingsMonthly) elGrossSavingsMonthly.textContent = formatEUR(monthlyGrossTotal);
+      const elNetSavingsAnnual = document.getElementById("kpiNetSavingsAnnual");
+      if (elNetSavingsAnnual) elNetSavingsAnnual.textContent = `+${formatEUR(annualNetTotal)} / an`;
+      const elPaybackPeriod = document.getElementById("kpiPaybackPeriod");
+      if (elPaybackPeriod) elPaybackPeriod.textContent = `${paybackDays} jours / mois`;
+      const elRoiPercentage = document.getElementById("kpiRoiPercentage");
+      if (elRoiPercentage) elRoiPercentage.textContent = `+${roiPercent} %`;
+      const elRoiMultiplier = document.getElementById("roiMultiplierBadge");
+      if (elRoiMultiplier) elRoiMultiplier.textContent = `${roiMultiplier}x la mise`;
+      const elTabRoiPill = document.getElementById("tabRoiPill");
+      if (elTabRoiPill) elTabRoiPill.textContent = `+${roiPercent}%`;
+      const elQuoteWasteAmount = document.getElementById("quoteWasteAmount");
+      if (elQuoteWasteAmount) elQuoteWasteAmount.textContent = formatEUR(monthlyGrossTotal);
+
+      return {
+        users, hourlyRate, minutesSaved, planPrice,
+        annualSlackCost, annualNetTotal, paybackDays, roiPercent
+      };
+    }
+
+    function setupRoiControls() {
+      const userSlider = document.getElementById("inputUserCount");
+      const hourlySlider = document.getElementById("inputHourlyRate");
+      const minutesSlider = document.getElementById("inputMinutesSaved");
+
+      if (userSlider) {
+        userSlider.addEventListener("input", (e) => {
+          state.roi.users = parseInt(e.target.value, 10);
+          const el = document.getElementById("displayUserCount");
+          if (el) el.textContent = `${state.roi.users} personnes`;
+          calculateRoi();
+          updateProposalView();
+        });
+      }
+
+      if (hourlySlider) {
+        hourlySlider.addEventListener("input", (e) => {
+          state.roi.hourlyRate = parseInt(e.target.value, 10);
+          const el = document.getElementById("displayHourlyRate");
+          if (el) el.textContent = `${state.roi.hourlyRate} € / heure`;
+          calculateRoi();
+          updateProposalView();
+        });
+      }
+
+      if (minutesSlider) {
+        minutesSlider.addEventListener("input", (e) => {
+          state.roi.minutesSaved = parseInt(e.target.value, 10);
+          const el = document.getElementById("displayMinutesSaved");
+          if (el) el.textContent = `${state.roi.minutesSaved} minutes / jour`;
+          calculateRoi();
+          updateProposalView();
+        });
+      }
+
+      // Plan Buttons
+      document.querySelectorAll(".plan-select-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const plan = btn.getAttribute("data-plan");
+          const price = parseFloat(btn.getAttribute("data-price"));
+
+          state.roi.plan = plan;
+          state.roi.planPrice = price;
+
+          document.querySelectorAll(".plan-select-btn").forEach(b => {
+            b.className = "plan-select-btn p-2.5 rounded-xl border text-center transition bg-white border-slate-300 text-slate-700 hover:border-slack-aubergine";
+          });
+          btn.className = "plan-select-btn p-2.5 rounded-xl border-2 text-center transition bg-purple-50 border-slack-aubergine text-slack-darkAubergine shadow-sm ring-1 ring-slack-aubergine/30";
+
+          calculateRoi();
+          updateProposalView();
+        });
+      });
+    }
+
+    function updateProposalView() {
+      const now = new Date();
+      const dateStr = now.toLocaleDateString("fr-FR", { year: "numeric", month: "long", day: "numeric" });
+      
+      const clientName = document.getElementById("clientName").value || "Acme Corp";
+      const clientContact = document.getElementById("clientContact").value || "Directeur des Opérations";
+      const clientSector = document.getElementById("clientSector").value || "Technologie";
+
+      document.getElementById("propDateDisplay").textContent = dateStr;
+      document.getElementById("propClientHeading").textContent = `Plan de Modernisation Stratégique Slack — ${clientName}`;
+      document.getElementById("propClientName").textContent = clientName;
+      document.getElementById("propClientContact").textContent = clientContact;
+      document.getElementById("propClientSector").textContent = clientSector;
+
+      // 1. Pain points cards based on discovery
+      const painContainer = document.getElementById("propKeyPainPointsList");
+      painContainer.innerHTML = `
+        <div class="bg-rose-50/80 p-3 rounded-xl border border-rose-200">
+          <div class="text-xs font-bold text-rose-800 flex items-center gap-1.5 mb-1">
+            <i class="fa-solid fa-triangle-exclamation"></i> Rupture d'Information
+          </div>
+          <div class="text-xs text-rose-900">${state.discoveryAnswers["q4"] || "Surcharge d'emails internes 'pour info' créant de l'infobésité et une perte de temps décisionnelle."}</div>
+        </div>
+        <div class="bg-amber-50/80 p-3 rounded-xl border border-amber-200">
+          <div class="text-xs font-bold text-amber-800 flex items-center gap-1.5 mb-1">
+            <i class="fa-solid fa-users-slash"></i> Cloisonnement Partenaires
+          </div>
+          <div class="text-xs text-amber-900">${state.discoveryAnswers["q3"] || "Absence de passerelle sécurisée avec les prestataires (usage risqué de WhatsApp / pièces jointes dispersées)."}</div>
+        </div>
+        <div class="bg-sky-50/80 p-3 rounded-xl border border-sky-200">
+          <div class="text-xs font-bold text-sky-800 flex items-center gap-1.5 mb-1">
+            <i class="fa-solid fa-clock-rotate-left"></i> Réunions Inutiles
+          </div>
+          <div class="text-xs text-sky-900">${state.discoveryAnswers["q6"] || "Réflexe systématique de bloquer des réunions de 30 min pour des points réglables en 2 min par Huddle/Thread."}</div>
+        </div>
+      `;
+
+      // 2. Scorecard Grid
+      const totalScore = Object.values(state.scorecard).reduce((a, b) => a + b, 0);
+      document.getElementById("propScoreValue").textContent = `${totalScore}/20`;
+      
+      const grid = document.getElementById("propScoreCardsGrid");
+      grid.innerHTML = "";
+      maturityCriteria.forEach(c => {
+        const val = state.scorecard[c.id] || 3;
+        const col = document.createElement("div");
+        col.className = "p-3 bg-slate-50 rounded-xl border border-slate-200 text-center";
+        col.innerHTML = `
+          <div class="text-[11px] font-semibold text-slate-500 truncate">${c.title.split(". ")[1]}</div>
+          <div class="text-lg font-black text-slate-800 mt-0.5">${val} <span class="text-xs text-slate-400 font-normal">/ 5</span></div>
+        `;
+        grid.appendChild(col);
+      });
+
+      // 3. ROI Data
+      const roiMetrics = calculateRoi();
+      document.getElementById("propPropUsers").textContent = `${roiMetrics.users} collaborateurs`;
+      document.getElementById("propPropCost").textContent = formatEUR(roiMetrics.annualSlackCost);
+      document.getElementById("propPropNet").textContent = `+${formatEUR(roiMetrics.annualNetTotal)} / an`;
+      document.getElementById("propPropPayback").textContent = `${roiMetrics.paybackDays} jours`;
+      document.getElementById("propPropMinutes").textContent = state.roi.minutesSaved;
+      document.getElementById("propPropRate").textContent = state.roi.hourlyRate;
+
+      // 4. Plan features list
+      const planNameEl = document.getElementById("propPlanName");
+      const planPriceEl = document.getElementById("propPlanPriceDisplay");
+      const planDescEl = document.getElementById("propPlanDetailDesc");
+      const featuresEl = document.getElementById("propPlanFeaturesList");
+
+      if (state.roi.plan === "pro") {
+        planNameEl.textContent = "Slack Pro";
+        planPriceEl.innerHTML = `6,75 € <span class="text-xs font-normal text-slate-500">/util./mois</span>`;
+        planDescEl.textContent = "Idéal pour éliminer la barrière des 90 jours d'historique, activer les intégrations illimitées et initier le Workflow Builder.";
+        featuresEl.innerHTML = `
+          <div class="flex items-center gap-2 text-xs text-slate-700"><i class="fa-solid fa-check text-slack-green"></i> Historique intégral des messages et fichiers illimité</div>
+          <div class="flex items-center gap-2 text-xs text-slate-700"><i class="fa-solid fa-check text-slack-green"></i> Canaux partagés Slack Connect avec vos clients</div>
+          <div class="flex items-center gap-2 text-xs text-slate-700"><i class="fa-solid fa-check text-slack-green"></i> Workflow Builder no-code pour automatiser les tâches</div>
+          <div class="flex items-center gap-2 text-xs text-slate-700"><i class="fa-solid fa-check text-slack-green"></i> Huddles audio/vidéo avec partage d'écran interactif</div>
+        `;
+      } else if (state.roi.plan === "business") {
+        planNameEl.textContent = "Slack Business+";
+        planPriceEl.innerHTML = `11,75 € <span class="text-xs font-normal text-slate-500">/util./mois</span>`;
+        planDescEl.textContent = "Le standard pour entreprises en croissance : intègre la gestion des identités (SSO SAML / Okta / Azure AD), la synchronisation SCIM des comptes, un SLA 99,99% et les exports de conformité.";
+        featuresEl.innerHTML = `
+          <div class="flex items-center gap-2 text-xs text-slate-700"><i class="fa-solid fa-check text-slack-green"></i> <strong>SSO SAML</strong> (Okta, Google, Azure AD) & Provisioning <strong>SCIM</strong></div>
+          <div class="flex items-center gap-2 text-xs text-slate-700"><i class="fa-solid fa-check text-slack-green"></i> Exports complets de tous les messages (canaux publics, privés et MP)</div>
+          <div class="flex items-center gap-2 text-xs text-slate-700"><i class="fa-solid fa-check text-slack-green"></i> Garantie de disponibilité SLA 99,99% financée</div>
+          <div class="flex items-center gap-2 text-xs text-slate-700"><i class="fa-solid fa-check text-slack-green"></i> Support client garanti 24/7 avec temps de réponse prioritaire</div>
+        `;
+      } else {
+        planNameEl.textContent = "Slack Enterprise Grid";
+        planPriceEl.innerHTML = `Sur Devis (~22 €) <span class="text-xs font-normal text-slate-500">/util./mois</span>`;
+        planDescEl.textContent = "Architecture multi-workspaces pour grands comptes et filiales, avec sécurité de niveau bancaire, conformité HIPAA/FINRA et DLP natif.";
+        featuresEl.innerHTML = `
+          <div class="flex items-center gap-2 text-xs text-slate-700"><i class="fa-solid fa-check text-slack-green"></i> Multiples espaces de travail illimités interconnectés</div>
+          <div class="flex items-center gap-2 text-xs text-slate-700"><i class="fa-solid fa-check text-slack-green"></i> E-discovery, DLP et conformité réglementaire poussée</div>
+          <div class="flex items-center gap-2 text-xs text-slate-700"><i class="fa-solid fa-check text-slack-green"></i> Support désigné et Customer Success Manager dédié</div>
+          <div class="flex items-center gap-2 text-xs text-slate-700"><i class="fa-solid fa-check text-slack-green"></i> Sécurité avancée EMM / MDM pour parcs mobiles</div>
+        `;
+      }
+    }
+
+    function copyToClipboard(text) {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      try {
+        document.execCommand('copy');
+      } catch (err) {
+        console.error("Could not copy text: ", err);
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function setupTabs() {
+      const tabBtns = document.querySelectorAll(".tab-btn");
+      const contents = document.querySelectorAll(".tab-content");
+
+      function activateTab(tabId) {
+        state.activeTab = tabId;
+        contents.forEach(c => {
+          if (c.id === tabId) {
+            c.classList.remove("hidden");
+            c.classList.add("block");
+          } else {
+            c.classList.add("hidden");
+            c.classList.remove("block");
+          }
+        });
+
+        tabBtns.forEach(btn => {
+          const target = btn.getAttribute("data-tab");
+          if (target === tabId) {
+            btn.className = "tab-btn flex items-center gap-2 px-3 py-2 rounded-lg text-white bg-white/20 border border-white/20 shadow-sm transition font-semibold";
+          } else {
+            btn.className = "tab-btn flex items-center gap-2 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition font-medium";
+          }
+        });
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      tabBtns.forEach(b => {
+        b.addEventListener("click", () => activateTab(b.getAttribute("data-tab")));
+      });
+
+      document.querySelectorAll(".goto-tab-btn").forEach(b => {
+        b.addEventListener("click", () => activateTab(b.getAttribute("data-goto")));
+      });
+
+      // Quick fill demo data
+      document.getElementById("btnQuickFillDemo").addEventListener("click", () => {
+        document.getElementById("clientName").value = "FinTech Horizon";
+        document.getElementById("clientContact").value = "Clara Benhamou (Chief Technology Officer)";
+        document.getElementById("clientSector").value = "Services Financiers / FinTech";
+
+        discoveryQuestions.forEach(q => {
+          state.discoveryAnswers[q.id] = q.defaultAnswer;
+        });
+        state.scorecard = { asyncCulture: 2, externalCollab: 3, automation: 2, securityIAM: 4 };
+        state.roi.users = 120;
+        state.roi.hourlyRate = 55;
+        state.roi.minutesSaved = 30;
+        state.roi.plan = "business";
+        state.roi.planPrice = 11.75;
+
+        document.getElementById("inputUserCount").value = 120;
+        document.getElementById("displayUserCount").textContent = "120 personnes";
+        document.getElementById("inputHourlyRate").value = 55;
+        document.getElementById("displayHourlyRate").textContent = "55 € / heure";
+        document.getElementById("inputMinutesSaved").value = 30;
+        document.getElementById("displayMinutesSaved").textContent = "30 minutes / jour";
+
+        renderDiscoveryQuestions();
+        renderScorecard();
+        calculateRoi();
+        updateProposalView();
+        showToast("Données de démo chargées avec succès !");
+      });
+
+      // Reset All
+      document.getElementById("btnResetAll").addEventListener("click", () => {
+        state.discoveryAnswers = {};
+        state.scorecard = { asyncCulture: 3, externalCollab: 3, automation: 2, securityIAM: 4 };
+        state.roi = { users: 50, hourlyRate: 45, minutesSaved: 25, plan: "business", planPrice: 11.75 };
+
+        document.getElementById("clientName").value = "Acme Corp";
+        document.getElementById("clientContact").value = "Marc Dupont (VP Operations)";
+        document.getElementById("clientSector").value = "Tech / SaaS / ESN";
+
+        document.getElementById("inputUserCount").value = 50;
+        document.getElementById("displayUserCount").textContent = "50 personnes";
+        document.getElementById("inputHourlyRate").value = 45;
+        document.getElementById("displayHourlyRate").textContent = "45 € / heure";
+        document.getElementById("inputMinutesSaved").value = 25;
+        document.getElementById("displayMinutesSaved").textContent = "25 minutes / jour";
+
+        renderDiscoveryQuestions();
+        renderScorecard();
+        calculateRoi();
+        updateProposalView();
+        showToast("Données réinitialisées.", "fa-rotate-left");
+      });
+
+      // Copy Slack Formatted text
+      document.getElementById("btnCopyProposal").addEventListener("click", () => {
+        const client = document.getElementById("clientName").value || "Prospect";
+        const totalScore = Object.values(state.scorecard).reduce((a, b) => a + b, 0);
+        const roi = calculateRoi();
+        const planName = state.roi.plan === "pro" ? "Slack Pro" : (state.roi.plan === "business" ? "Slack Business+" : "Enterprise Grid");
+
+        const slackText = `
+:rocket: *Restitution Stratégique Slack — ${client}*
+----------------------------------------------------
+*Score d'Audit de Maturité :* ${totalScore}/20 pts
+*Forfait Prescrit :* *${planName}* (${state.roi.planPrice} € / util. / mois)
+
+:bar_chart: *Business Case & Rentabilité Financière :*
+• Collaborateurs déployés : *${roi.users} pers.*
+• Gain de temps projeté : *${state.roi.minutesSaved} min / jour / collab.*
+• Coût annuel des licences : *${formatEUR(roi.annualSlackCost)}*
+• Valeur nette récupérée : *+${formatEUR(roi.annualNetTotal)} / an*
+• Amortissement : *Rentabilisé en ${roi.paybackDays} jours par mois* (ROI de *+${roi.roiPercent}%*)
+
+:key: *Axes Prioritaires Débloqués :*
+1. *Sécurité & IAM :* Mise en œuvre du SSO SAML + SCIM (révocation immédiate des accès freelances).
+2. *Fluidité Partenaires :* Remplacement des boucles WhatsApp/emails par *Slack Connect*.
+3. *Automatisation :* Déploiement de 3 flux no-code *Workflow Builder* pour supprimer les formulaires manuels.
+
+:white_check_mark: *Prochaine étape recommandée :* Lancement d'un pilote cadré de 30 jours sur l'équipe clé.
+        `.trim();
+
+        copyToClipboard(slackText);
+        showToast("Format Slack copié ! Collez-le directement dans un canal ou Canvas.");
+      });
+
+      // Export to PDF directly (generating downloadable PDF file)
+      const btnExportPdf = document.getElementById("btnPrintProposal");
+      if (btnExportPdf) {
+        btnExportPdf.addEventListener("click", async () => {
+          await generateAndDownloadPdf();
+        });
+      }
+
+      // Native Print button fallback
+      const btnNativePrint = document.getElementById("btnNativePrint");
+      if (btnNativePrint) {
+        btnNativePrint.addEventListener("click", () => {
+          try {
+            window.print();
+          } catch (e) {
+            showToast("Impression directe indisponible dans cet environnement.", "fa-triangle-exclamation", true);
+          }
+        });
+      }
+
+      // Inputs client
+      ["clientName", "clientContact", "clientSector"].forEach(id => {
+        document.getElementById(id).addEventListener("input", updateProposalView);
+      });
+
+      setupGeminiFeatures();
+    }
+
+    // Function to generate and trigger PDF download with compact typography
+    async function generateAndDownloadPdf() {
+      const btn = document.getElementById("btnPrintProposal");
+      const btnText = document.getElementById("btnPrintProposalText");
+      const origHtml = btn.innerHTML;
+
+      const targetEl = document.getElementById("proposalPrintableArea");
+      if (!targetEl) {
+        showToast("Document introuvable pour l'export.", "fa-triangle-exclamation", true);
+        return;
+      }
+
+      // Refresh view to ensure all inputs and KPIs are updated
+      updateProposalView();
+
+      btn.disabled = true;
+      if (btnText) {
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-amber-300"></i> Génération du PDF...`;
+      }
+
+      // Activate compact styling for PDF layout
+      targetEl.classList.add("pdf-export-mode");
+
+      const clientRaw = document.getElementById("clientName")?.value || "Client";
+      const sanitizedClient = clientRaw.trim().replace(/[^a-zA-Z0-9_\u00C0-\u017F-]/g, "_");
+      const filename = `Proposition_Slack_${sanitizedClient}.pdf`;
+
+      try {
+        if (typeof html2pdf !== "undefined") {
+          const opt = {
+            margin: [8, 8, 8, 8],
+            filename: filename,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: {
+              scale: 2,
+              useCORS: true,
+              logging: false,
+              scrollY: 0
+            },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+          };
+
+          await html2pdf().set(opt).from(targetEl).save();
+          showToast(`PDF téléchargé : ${filename}`, "fa-file-arrow-down");
+        } else {
+          // Fallback to window.print if library couldn't load
+          window.print();
+          showToast("Ouverture de la boîte d'impression...", "fa-print");
+        }
+      } catch (err) {
+        console.error("PDF generation error:", err);
+        try {
+          window.print();
+        } catch (printErr) {
+          showToast("Erreur lors de la génération du PDF.", "fa-triangle-exclamation", true);
+        }
+      } finally {
+        // Restore standard screen layout
+        targetEl.classList.remove("pdf-export-mode");
+        btn.disabled = false;
+        btn.innerHTML = origHtml;
+      }
+    }
+
+    // =========================================================================
+    // GEMINI AI WORKFLOWS & INTEGRATION
+    // =========================================================================
+    function setupGeminiFeatures() {
+      // 1. AI Simulation of Discovery Answers tailored to client & sector
+      const btnSimulate = document.getElementById("btnAiSimulateAnswers");
+      btnSimulate.addEventListener("click", async () => {
+        const clientName = document.getElementById("clientName").value || "Prospect";
+        const sector = document.getElementById("clientSector").value || "Général";
+        const contact = document.getElementById("clientContact").value || "Décideur";
+
+        btnSimulate.disabled = true;
+        const originalHtml = btnSimulate.innerHTML;
+        btnSimulate.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-amber-300"></i> Simulation en cours...`;
+
+        try {
+          const systemPrompt = `Tu es un Consultant Senior Slack d'élite. Ton rôle est de simuler des réponses d'investigation réalistes et pragmatiques données par un prospect lors d'un entretien de découverte. Fournis des réponses directes, chiffrées et révélatrices de friction interne pour chaque question posée.`;
+
+          const userPrompt = `Prospect : ${clientName}, Secteur : ${sector}, Contact : ${contact}.
+Génère pour chacune des 10 questions de découverte suivantes une réponse type réaliste, concrète et chiffrée, reflétant les douleurs réelles de ce secteur :
+${discoveryQuestions.map(q => `${q.id} (${q.pillar}): ${q.question}`).join("\n")}`;
+
+          const schema = {
+            type: "OBJECT",
+            properties: {
+              answers: {
+                type: "ARRAY",
+                items: {
+                  type: "OBJECT",
+                  properties: {
+                    id: { type: "STRING" },
+                    answer: { type: "STRING" }
+                  },
+                  required: ["id", "answer"]
+                }
+              }
+            },
+            required: ["answers"]
+          };
+
+          const jsonText = await callGeminiApi({
+            systemPrompt,
+            userPrompt,
+            isJson: true,
+            responseSchema: schema
+          });
+
+          const parsed = JSON.parse(jsonText);
+          if (parsed.answers && Array.isArray(parsed.answers)) {
+            parsed.answers.forEach(item => {
+              if (item.id && item.answer) {
+                state.discoveryAnswers[item.id] = item.answer;
+              }
+            });
+            renderDiscoveryQuestions();
+            updateProposalView();
+            showToast(`10 réponses réalistes simulées par Gemini pour ${clientName} !`, "fa-wand-magic-sparkles");
+          }
+        } catch (error) {
+          console.error("Gemini Simulation error:", error);
+          showToast("Échec de la génération IA. Vérifiez la connexion.", "fa-triangle-exclamation", true);
+        } finally {
+          btnSimulate.disabled = false;
+          btnSimulate.innerHTML = originalHtml;
+        }
+      });
+
+      // 2. Custom AI Objection Killer
+      const btnAiObjection = document.getElementById("btnAiGenerateCounterPitch");
+      const objectionNotes = document.getElementById("customObjectionNotes");
+      const aiObjContainer = document.getElementById("aiObjectionResponseContainer");
+      const aiObjContent = document.getElementById("aiObjectionContent");
+      const btnCopyAiObj = document.getElementById("btnCopyAiObjection");
+
+      btnAiObjection.addEventListener("click", async () => {
+        const query = objectionNotes.value.trim();
+        if (!query) {
+          showToast("Veuillez saisir une objection ou question client ci-dessus.", "fa-circle-info", true);
+          objectionNotes.focus();
+          return;
+        }
+
+        btnAiObjection.disabled = true;
+        const originalBtnHtml = btnAiObjection.innerHTML;
+        btnAiObjection.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-amber-300"></i> Élaboration de la riposte...`;
+
+        try {
+          const clientName = document.getElementById("clientName").value || "Le client";
+          const systemPrompt = `Tu es le meilleur Consultant Avant-Vente Slack au monde (Certified Slack Admin). Ton rôle est de désamorcer n'importe quelle objection d'un prospect (C-Level, DSI, CFO) et de la transformer en opportunité de closing pour Slack.
+Sois incisif, direct, chiffres à l'appui, sans concessions mais courtois et ultra-professionnel. Structure ta réponse en 3 points distincts :
+1. Repartie Immédiate (Argument Massue sans détour)
+2. Question de Rebond Psychologique (renverser la charge de la preuve)
+3. Chiffrage Économique ou ROI d'Impact`;
+
+          const userPrompt = `Prospect : ${clientName}
+Objection soulevée : "${query}"
+Forfait Slack envisagé : ${state.roi.plan} (${state.roi.planPrice}€/mois).
+Génère la parade commerciale idéale prête à être dite oralement ou envoyée en message.`;
+
+          const counterPitchText = await callGeminiApi({
+            systemPrompt,
+            userPrompt
+          });
+
+          aiObjContainer.classList.remove("hidden");
+          aiObjContent.innerHTML = counterPitchText
+            .split('\n')
+            .filter(line => line.trim().length > 0)
+            .map(line => `<p class="leading-relaxed">${line.replace(/\*\*(.*?)\*\*/g, '<strong class="text-amber-300">$1</strong>')}</p>`)
+            .join('');
+
+          showToast("Parade IA générée avec succès !", "fa-bolt");
+        } catch (err) {
+          console.error("Gemini Objection error:", err);
+          showToast("Impossible de générer la parade IA pour l'instant.", "fa-triangle-exclamation", true);
+        } finally {
+          btnAiObjection.disabled = false;
+          btnAiObjection.innerHTML = originalBtnHtml;
+        }
+      });
+
+      btnCopyAiObj.addEventListener("click", () => {
+        if (aiObjContent.textContent) {
+          copyToClipboard(aiObjContent.textContent);
+          showToast("Parade copiée dans le presse-papier !");
+        }
+      });
+
+      // 3. AI Executive Summary & Closing Pitch Generator
+      const btnAiDraftSummary = document.getElementById("btnAiDraftExecutiveSummary");
+      const btnAiDraftSummaryText = document.getElementById("btnAiDraftSummaryText");
+
+      function renderExecutiveSummaryText(text) {
+        const summaryEl = document.getElementById("propExecutiveSummary");
+        if (!summaryEl) return;
+        summaryEl.innerHTML = formatMarkdownToHtml(text.trim());
+        summaryEl.className = "text-xs sm:text-sm text-slate-700 leading-relaxed bg-purple-50/70 p-4 rounded-xl border border-purple-200/90 shadow-inner";
+      }
+
+      btnAiDraftSummary.addEventListener("click", async () => {
+        const clientName = document.getElementById("clientName").value || "Acme Corp";
+        const contact = document.getElementById("clientContact").value || "Comité de Direction";
+        const sector = document.getElementById("clientSector").value || "Entreprise";
+        const roi = calculateRoi();
+        const totalScore = Object.values(state.scorecard).reduce((a, b) => a + b, 0);
+
+        btnAiDraftSummary.disabled = true;
+        btnAiDraftSummaryText.textContent = "Rédaction IA en cours...";
+
+        const discoverySummary = Object.entries(state.discoveryAnswers)
+          .filter(([_, v]) => v && v.trim().length > 0)
+          .map(([k, v]) => `- ${k}: ${v}`)
+          .join("\n") || "Échanges préliminaires sur la charge email et le besoin d'automatisation.";
+
+        const systemPrompt = `Tu es un Directeur Conseil Avant-Vente chez Slack (Certified Slack Admin). Tu rédiges un diagnostic opérationnel et une synthèse exécutive haut de gamme pour le rapport de présentation destiné au Directeur Général et au Comité de Direction.
+Ton style doit être percutant, valorisant les gains financiers et démontrant l'impact d'une transformation avec Slack. Rédige en français soigné, structuré en 2 paragraphes denses avec des données chiffrées précises.`;
+
+        const userPrompt = `Rédige une synthèse exécutive de 2 paragraphes percutants pour l'entreprise ${clientName} (${sector}), représentée par ${contact}.
+Contexte chiffré :
+- Score de maturité collaborative : ${totalScore}/20
+- Nombre d'employés ciblés : ${roi.users}
+- Coût annuel des licences Slack recommandées : ${formatEUR(roi.annualSlackCost)}
+- Gain net annuel modélisé : +${formatEUR(roi.annualNetTotal)} / an
+- Forfait prescrit : ${state.roi.plan === 'pro' ? 'Slack Pro' : (state.roi.plan === 'business' ? 'Slack Business+' : 'Enterprise Grid')} (${state.roi.planPrice}€/mois)
+- Amortissement : rentabilisé en ${roi.paybackDays} jours par mois (ROI : +${roi.roiPercent}%).
+Notes de découverte client :
+${discoverySummary}
+
+Livre un diagnostic démontrant le coût de l'inaction et justifiant la validation immédiate du pilote Slack de 30 jours.`;
+
+        try {
+          const generatedSummary = await callGeminiApi({
+            systemPrompt,
+            userPrompt
+          });
+
+          renderExecutiveSummaryText(generatedSummary);
+          showToast("Synthèse exécutive rédigée par Gemini !", "fa-sparkles");
+        } catch (e) {
+          console.warn("Gemini API call returned an error, activating strategic executive fallback:", e);
+          const fallback = generateFallbackExecutiveSummary(clientName, sector, contact, roi, totalScore);
+          renderExecutiveSummaryText(fallback);
+          showToast("Synthèse exécutive rédigée avec succès !", "fa-wand-magic-sparkles");
+        } finally {
+          btnAiDraftSummary.disabled = false;
+          btnAiDraftSummaryText.textContent = "Rédiger Synthèse avec Gemini";
+        }
+      });
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      renderDiscoveryQuestions();
+      renderObjections();
+      renderScorecard();
+      setupRoiControls();
+      setupTabs();
+      calculateRoi();
+      updateProposalView();
+    });
+  </script>
+</body>
+</html>
