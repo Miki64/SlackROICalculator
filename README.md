@@ -2,7 +2,7 @@
 
 Une application web interactive et moderne conçue pour les **Consultants Slack Certifiés** et **Sales Engineers**. Elle permet de mener des entretiens de découverte, d'évaluer la maturité collaborative, de calculer le ROI financier et d'imprimer une proposition commerciale prête pour le comité de direction.
 
-**Lien :** [index.html](https://miki64.github.io/SlackROICalculator/)
+**Lien :** https://miki64.github.io/SlackROICalculator/
 
 ---
 
