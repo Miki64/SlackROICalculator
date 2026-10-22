@@ -51,6 +51,61 @@
       font-weight: 600;
     }
 
+    /* Sliders styling with dynamic track */
+    .c-roi-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 8px;
+      border-radius: 9999px;
+      background: #e2e8f0;
+      outline: none;
+      transition: background 0.15s ease;
+    }
+    .c-roi-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #4A154B;
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .c-roi-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+      background: #611f69;
+    }
+    .c-roi-slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #4A154B;
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+    }
+
+    /* Accordion Legal & Methodology transitions */
+    .legal-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease-out, opacity 0.3s ease;
+      opacity: 0;
+    }
+    .legal-content.open {
+      max-height: 800px;
+      opacity: 1;
+    }
+    .rotate-chevron {
+      transition: transform 0.3s ease;
+    }
+    .rotate-chevron.open {
+      transform: rotate(180deg);
+    }
+
     /* Styles compacts appliqués dynamiquement lors de l'export PDF */
     .pdf-export-mode {
       width: 100% !important;
@@ -389,124 +444,339 @@
     </section>
 
     <!-- ================================================================= -->
-    <!-- TAB 4: CALCULATEUR DE RENTABILITÉ & BUSINESS CASE (ROI) -->
+    <!-- TAB 4: CALCULATEUR DE RENTABILITÉ & MODÈLE ROI OFFICIEL SLACK -->
     <!-- ================================================================= -->
     <section id="tab-roi" class="tab-content hidden space-y-6">
       <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+        <!-- Header with Official Slack Branding & Badges -->
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-slate-100">
           <div>
+            <div class="flex flex-wrap items-center gap-2 mb-1.5">
+              <span class="badge-pill bg-purple-100 text-slack-darkAubergine border border-purple-200">
+                <i class="fa-brands fa-slack mr-1.5 text-slack-aubergine"></i> Modèle Certifié Slack
+              </span>
+              <span class="badge-pill bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <i class="fa-solid fa-calculator mr-1"></i> Étude d'Impact Forrester
+              </span>
+            </div>
             <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2.5">
-              <span class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm font-bold">4</span>
-              Calculateur de Rentabilité & Modèle ROI
+              <span class="w-8 h-8 rounded-lg bg-slack-darkAubergine text-white flex items-center justify-center text-sm font-bold">4</span>
+              Calculateur de Retour sur Investissement Officiel de Slack
             </h2>
-            <p class="text-sm text-slate-500 mt-1">Démontrez de façon irréfutable que le coût de licence est amorti dès la première semaine.</p>
+            <p class="text-sm text-slate-500 mt-1">
+              Modélisez vos gains de productivité d'après le calculateur officiel de Slack (<span class="font-semibold text-slate-700">réduction de 50 % des réunions et 20 % des e-mails</span>).
+            </p>
           </div>
-          <span class="badge-pill bg-emerald-50 text-emerald-700 border border-emerald-200">
-            <i class="fa-solid fa-arrow-trend-up mr-1.5"></i> Business Case CFO
-          </span>
+          
+          <div class="flex flex-wrap items-center gap-2">
+            <!-- Mode Switcher -->
+            <div class="bg-slate-100 p-1 rounded-xl flex items-center text-xs font-semibold border border-slate-200">
+              <button id="btnModeOfficial" class="px-3 py-1.5 rounded-lg bg-white text-slack-darkAubergine shadow-sm transition flex items-center gap-1.5">
+                <i class="fa-brands fa-slack text-slack-aubergine"></i> Modèle Officiel Slack
+              </button>
+              <button id="btnModeCustom" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
+                <i class="fa-solid fa-sliders"></i> Mode Personnalisé
+              </button>
+            </div>
+
+            <!-- External Link to Official Slack Calculator -->
+            <a href="https://slack.com/intl/fr-fr/roi-calculator" target="_blank" rel="noopener noreferrer" class="px-3 py-2 text-xs font-semibold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition flex items-center gap-1.5" title="Ouvrir le simulateur original sur slack.com">
+              <i class="fa-solid fa-arrow-up-right-from-square text-slack-aubergine"></i> Source Slack.com
+            </a>
+          </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 my-6">
-          <!-- Paramètres du Modèle -->
-          <div class="lg:col-span-5 space-y-5 bg-slate-50 p-5 rounded-2xl border border-slate-200">
-            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
-              <i class="fa-solid fa-sliders text-slack-aubergine"></i> Hypothèses de Déploiement
-            </h3>
-
-            <!-- Users Slider -->
-            <div>
-              <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
-                <label>Nombre de collaborateurs déployés</label>
-                <span id="displayUserCount" class="text-slack-aubergine font-bold">50 personnes</span>
+          
+          <!-- LEFT COLUMN: CONTROLS & INPUTS -->
+          <div class="lg:col-span-5 space-y-5 bg-slate-50 p-5 sm:p-6 rounded-2xl border border-slate-200">
+            
+            <!-- OFFICIAL SLACK CONTROLS SECTION -->
+            <div id="controlsOfficialSection" class="space-y-4">
+              <div class="flex items-center justify-between">
+                <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                  <i class="fa-solid fa-sliders text-slack-aubergine"></i> Paramètres Officiels Slack
+                </h3>
+                <span class="text-[11px] text-slate-400 font-medium">Étude Forrester 2024</span>
               </div>
-              <input type="range" id="inputUserCount" min="5" max="500" step="5" value="50" class="w-full accent-slack-aubergine cursor-pointer">
+
+              <!-- 1. Nombre de collaborateurs (Slack non-linear slider) -->
+              <div>
+                <div class="flex justify-between items-center text-xs font-semibold text-slate-700 mb-1.5">
+                  <label for="inputOfficialEmployees">Nombre de collaborateurs</label>
+                  <span id="displayOfficialEmployees" class="text-slack-aubergine font-bold bg-white px-2 py-0.5 rounded border border-purple-200 text-xs shadow-2xs">50 personnes</span>
+                </div>
+                <input type="range" id="inputOfficialEmployees" min="0" max="89" step="1" value="49" class="c-roi-slider cursor-pointer">
+                <div class="flex justify-between text-[11px] text-slate-400 mt-1">
+                  <span>1</span>
+                  <span>10 000</span>
+                </div>
+              </div>
+
+              <!-- 2. Salaire annuel moyen par personne -->
+              <div>
+                <div class="flex justify-between items-center text-xs font-semibold text-slate-700 mb-1.5">
+                  <label for="inputOfficialSalary">Salaire annuel moyen par personne</label>
+                  <span id="displayOfficialSalary" class="text-slack-aubergine font-bold bg-white px-2 py-0.5 rounded border border-purple-200 text-xs shadow-2xs">85 000 €</span>
+                </div>
+                <input type="range" id="inputOfficialSalary" min="20000" max="130000" step="1000" value="85000" class="c-roi-slider cursor-pointer">
+                <div class="flex justify-between text-[11px] text-slate-400 mt-1">
+                  <span>20 000 €</span>
+                  <span class="italic text-[10px] text-slate-400">Base légale : 2 080 h / an</span>
+                  <span>130 000 €</span>
+                </div>
+              </div>
+
+              <!-- 3. Temps moyen passé quotidiennement aux e-mails (heures) -->
+              <div>
+                <div class="flex justify-between items-center text-xs font-semibold text-slate-700 mb-1.5">
+                  <label for="inputOfficialEmailHours">Temps quotidien passé sur les e-mails</label>
+                  <span id="displayOfficialEmailHours" class="text-slack-aubergine font-bold bg-white px-2 py-0.5 rounded border border-purple-200 text-xs shadow-2xs">2 h / jour</span>
+                </div>
+                <input type="range" id="inputOfficialEmailHours" min="1" max="8" step="1" value="2" class="c-roi-slider cursor-pointer">
+                <div class="flex justify-between text-[11px] text-slate-400 mt-1">
+                  <span>1 h</span>
+                  <span class="text-[10px] text-emerald-700 font-medium"><i class="fa-solid fa-bolt mr-1"></i>Réduction de 20 % via Slack</span>
+                  <span>8 h</span>
+                </div>
+              </div>
+
+              <!-- 4. Nombre de réunions virtuelles par mois -->
+              <div>
+                <div class="flex justify-between items-center text-xs font-semibold text-slate-700 mb-1.5">
+                  <label for="inputOfficialMeetings">Nombre de réunions virtuelles par mois</label>
+                  <span id="displayOfficialMeetings" class="text-slack-aubergine font-bold bg-white px-2 py-0.5 rounded border border-purple-200 text-xs shadow-2xs">10 réunions</span>
+                </div>
+                <input type="range" id="inputOfficialMeetings" min="1" max="100" step="1" value="10" class="c-roi-slider cursor-pointer">
+                <div class="flex justify-between text-[11px] text-slate-400 mt-1">
+                  <span>1</span>
+                  <span class="text-[10px] text-emerald-700 font-medium"><i class="fa-solid fa-bolt mr-1"></i>Réduction de 50 % via Huddles/Canaux</span>
+                  <span>100</span>
+                </div>
+              </div>
             </div>
 
-            <!-- Hourly Rate Slider -->
-            <div>
-              <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
-                <label>Coût horaire moyen chargé (€/h)</label>
-                <span id="displayHourlyRate" class="text-slack-aubergine font-bold">45 € / heure</span>
+            <!-- CUSTOM DIRECT CONTROLS SECTION (TOGGLEABLE) -->
+            <div id="controlsCustomSection" class="space-y-4 hidden border-t border-slate-200 pt-3">
+              <div class="flex items-center justify-between">
+                <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                  <i class="fa-solid fa-sliders text-slack-aubergine"></i> Hypothèse Directe de Temps
+                </h3>
+                <span class="text-[11px] text-slate-400 font-medium">Mode Minutes</span>
               </div>
-              <input type="range" id="inputHourlyRate" min="25" max="150" step="5" value="45" class="w-full accent-slack-aubergine cursor-pointer">
+
+              <!-- Users Slider Custom -->
+              <div>
+                <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                  <label>Nombre de collaborateurs</label>
+                  <span id="displayUserCount" class="text-slack-aubergine font-bold">50 personnes</span>
+                </div>
+                <input type="range" id="inputUserCount" min="5" max="500" step="5" value="50" class="c-roi-slider cursor-pointer">
+              </div>
+
+              <!-- Hourly Rate Slider Custom -->
+              <div>
+                <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                  <label>Coût horaire moyen chargé (€/h)</label>
+                  <span id="displayHourlyRate" class="text-slack-aubergine font-bold">45 € / heure</span>
+                </div>
+                <input type="range" id="inputHourlyRate" min="20" max="150" step="1" value="45" class="c-roi-slider cursor-pointer">
+              </div>
+
+              <!-- Minutes Saved Slider Custom -->
+              <div>
+                <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                  <label>Temps récupéré par jour / collaborateur</label>
+                  <span id="displayMinutesSaved" class="text-slack-aubergine font-bold">25 minutes / jour</span>
+                </div>
+                <input type="range" id="inputMinutesSaved" min="10" max="60" step="5" value="25" class="c-roi-slider cursor-pointer">
+              </div>
             </div>
 
-            <!-- Minutes Saved Slider -->
-            <div>
-              <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
-                <label>Temps récupéré par jour / personne</label>
-                <span id="displayMinutesSaved" class="text-slack-aubergine font-bold">25 minutes / jour</span>
+            <!-- FORFAIT SLACK SELECTOR (COMMUN) -->
+            <div class="pt-2 border-t border-slate-200">
+              <div class="flex justify-between items-center mb-2">
+                <label class="block text-xs font-semibold text-slate-700">Forfait Slack Retenu</label>
+                <span class="text-[10px] text-purple-700 bg-purple-50 border border-purple-200 px-1.5 py-0.5 rounded font-semibold">Base Simulateur : 15 €</span>
               </div>
-              <input type="range" id="inputMinutesSaved" min="10" max="60" step="5" value="25" class="w-full accent-slack-aubergine cursor-pointer">
-              <p class="text-[11px] text-slate-400 mt-1 italic">Benchmark : 20 min (réduction réunions) + 15 min (recherche d'infos).</p>
-            </div>
-
-            <!-- Forfait Slack Selector -->
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-2">Forfait Slack Retenu</label>
               <div class="grid grid-cols-3 gap-2">
-                <button data-plan="pro" data-price="6.75" class="plan-select-btn p-2.5 rounded-xl border text-center transition bg-white border-slate-300 text-slate-700 hover:border-slack-aubergine">
+                <button data-plan="pro" data-price="6.75" class="plan-select-btn p-2 rounded-xl border text-center transition bg-white border-slate-300 text-slate-700 hover:border-slack-aubergine">
                   <span class="block text-xs font-bold">Slack Pro</span>
                   <span class="block text-xs text-slate-500 font-medium">6,75 €</span>
                 </button>
-                <button data-plan="business" data-price="11.75" class="plan-select-btn p-2.5 rounded-xl border-2 text-center transition bg-purple-50 border-slack-aubergine text-slack-darkAubergine shadow-sm ring-1 ring-slack-aubergine/30">
+                <button data-plan="business" data-price="15.00" class="plan-select-btn p-2 rounded-xl border-2 text-center transition bg-purple-50 border-slack-aubergine text-slack-darkAubergine shadow-sm ring-1 ring-slack-aubergine/30 relative">
+                  <span class="absolute -top-2 right-2 text-[9px] bg-slack-darkAubergine text-white px-1.5 py-0.2 rounded-full font-bold">Officiel</span>
                   <span class="block text-xs font-bold">Business+</span>
-                  <span class="block text-xs text-slate-500 font-medium">11,75 €</span>
+                  <span class="block text-xs text-slate-600 font-bold">15,00 €</span>
                 </button>
-                <button data-plan="enterprise" data-price="22.00" class="plan-select-btn p-2.5 rounded-xl border text-center transition bg-white border-slate-300 text-slate-700 hover:border-slack-aubergine">
+                <button data-plan="enterprise" data-price="22.00" class="plan-select-btn p-2 rounded-xl border text-center transition bg-white border-slate-300 text-slate-700 hover:border-slack-aubergine">
                   <span class="block text-xs font-bold">Grid Ent.</span>
                   <span class="block text-xs text-slate-500 font-medium">~22 €</span>
                 </button>
               </div>
+              <p class="text-[11px] text-slate-400 mt-2 italic">
+                * Le calculateur officiel Slack utilise le coût de référence de 15 €/utilisateur/mois au forfait Business+.
+              </p>
             </div>
+
           </div>
 
-          <!-- Résultats Financiers Dashboard -->
-          <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
-            <div class="grid grid-cols-2 gap-4">
-              <div class="bg-gradient-to-br from-purple-900 to-slack-darkAubergine text-white p-5 rounded-2xl shadow-sm">
-                <span class="text-xs text-purple-200 font-medium uppercase tracking-wider block">Gains Bruts Productivité</span>
-                <div class="text-2xl sm:text-3xl font-black mt-1" id="kpiGrossSavingsAnnual">97 500 €</div>
-                <span class="text-xs text-purple-300 block mt-1" id="kpiGrossSavingsMonthly">soit 8 125 € / mois</span>
-              </div>
-              <div class="bg-gradient-to-br from-emerald-600 to-teal-700 text-white p-5 rounded-2xl shadow-sm">
+          <!-- RIGHT COLUMN: RESULTS & STATS DASHBOARD -->
+          <div class="lg:col-span-7 flex flex-col justify-between space-y-5">
+            
+            <!-- Top Line Banner (Grandes Économies Totales Annuelles) -->
+            <div class="bg-gradient-to-br from-slate-900 via-purple-950 to-slack-darkAubergine text-white p-6 rounded-2xl shadow-md border border-purple-800/40 relative overflow-hidden">
+              <div class="relative z-10">
                 <div class="flex items-center justify-between">
-                  <span class="text-xs text-emerald-100 font-medium uppercase tracking-wider">Retour (ROI)</span>
-                  <span id="roiMultiplierBadge" class="text-[11px] font-bold bg-white/20 px-2 py-0.5 rounded-full">13.8x la mise</span>
+                  <span class="text-xs text-purple-200 font-bold tracking-wider uppercase flex items-center gap-1.5">
+                    <i class="fa-solid fa-piggy-bank text-amber-300"></i> Économies Totales Réalisées Annuellement
+                  </span>
+                  <span id="roiMultiplierBadge" class="text-xs font-black bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-2.5 py-1 rounded-full">
+                    37.2x la mise
+                  </span>
                 </div>
-                <div class="text-2xl sm:text-3xl font-black mt-1" id="kpiRoiPercentage">+1283 %</div>
-                <span class="text-xs text-emerald-200 block mt-1">Rendement de l'investissement</span>
+                <div class="flex items-baseline gap-2 mt-2">
+                  <div class="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight" id="kpiGrossSavingsAnnual">
+                    335 096 €
+                  </div>
+                  <span class="text-xs text-purple-300 font-medium">/ an</span>
+                </div>
+                <div class="flex flex-wrap items-center gap-4 mt-2 text-xs text-purple-200">
+                  <span id="kpiGrossSavingsMonthly"><i class="fa-regular fa-clock mr-1 text-purple-300"></i>Soit 27 925 € / mois</span>
+                  <span>•</span>
+                  <span id="kpiEquivalentMinutesDaily"><i class="fa-solid fa-bolt mr-1 text-amber-300"></i>~38 min gagnées / collab. / jour</span>
+                </div>
+              </div>
+              <div class="absolute -right-6 -bottom-8 text-white/5 text-9xl font-black select-none pointer-events-none">
+                €
               </div>
             </div>
 
+            <!-- Grille des 6 Métriques Officielles Slack -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              
+              <!-- 1. Jours par an économisés -->
+              <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs hover:border-purple-200 transition">
+                <div class="text-xs font-semibold text-slate-500 flex items-center gap-1.5">
+                  <i class="fa-regular fa-calendar-check text-slack-aubergine"></i> Jours économisés / collab.
+                </div>
+                <div class="text-2xl font-black text-slate-900 mt-1" id="kpiDaysSavedPerUser">21 jours</div>
+                <span class="text-[11px] text-slate-400 block mt-0.5">par an et par employé</span>
+              </div>
+
+              <!-- 2. Heures de réunions économisées -->
+              <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs hover:border-purple-200 transition">
+                <div class="text-xs font-semibold text-slate-500 flex items-center gap-1.5">
+                  <i class="fa-solid fa-video text-sky-600"></i> Heures réunions
+                </div>
+                <div class="text-2xl font-black text-slate-900 mt-1" id="kpiHoursSavedMeetings">3 000 h</div>
+                <span class="text-[11px] text-sky-600 font-medium block mt-0.5">-50% de temps réunion</span>
+              </div>
+
+              <!-- 3. Heures de gestion d'e-mails économisées -->
+              <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs hover:border-purple-200 transition">
+                <div class="text-xs font-semibold text-slate-500 flex items-center gap-1.5">
+                  <i class="fa-regular fa-envelope text-purple-600"></i> Heures e-mails
+                </div>
+                <div class="text-2xl font-black text-slate-900 mt-1" id="kpiHoursSavedEmails">5 200 h</div>
+                <span class="text-[11px] text-purple-600 font-medium block mt-0.5">-20% de charge e-mail</span>
+              </div>
+
+              <!-- 4. Économies sur les réunions -->
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-2xs">
+                <div class="text-xs font-semibold text-slate-500 flex items-center gap-1.5">
+                  <i class="fa-solid fa-coins text-amber-500"></i> Économies Réunions
+                </div>
+                <div class="text-xl font-bold text-slate-800 mt-1" id="kpiSavingsMeetings">122 596 €</div>
+                <span class="text-[11px] text-slate-400 block mt-0.5">gains financiers annuels</span>
+              </div>
+
+              <!-- 5. Économies sur les e-mails -->
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-2xs">
+                <div class="text-xs font-semibold text-slate-500 flex items-center gap-1.5">
+                  <i class="fa-solid fa-inbox text-emerald-600"></i> Économies E-mails
+                </div>
+                <div class="text-xl font-bold text-slate-800 mt-1" id="kpiSavingsEmails">212 500 €</div>
+                <span class="text-[11px] text-slate-400 block mt-0.5">gains financiers annuels</span>
+              </div>
+
+              <!-- 6. ROI Global -->
+              <div class="bg-gradient-to-br from-emerald-50 to-teal-50 p-4 rounded-xl border border-emerald-200 shadow-2xs">
+                <div class="text-xs font-semibold text-emerald-800 flex items-center gap-1.5">
+                  <i class="fa-solid fa-chart-line text-emerald-600"></i> Retour (ROI)
+                </div>
+                <div class="text-xl font-black text-emerald-700 mt-1" id="kpiRoiPercentage">+3 723 %</div>
+                <span class="text-[11px] text-emerald-600 font-medium block mt-0.5">Rendement net</span>
+              </div>
+
+            </div>
+
+            <!-- Jauge visuelle de répartition des gains (Réunions vs E-mails) -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-2">
+              <div class="flex justify-between text-xs font-semibold text-slate-700">
+                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Réunions Virtuelles (<span id="pctMeetingsShare">37%</span>)</span>
+                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span> Gestion E-mails (<span id="pctEmailsShare">63%</span>)</span>
+              </div>
+              <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden flex">
+                <div id="barMeetingsShare" class="bg-amber-500 h-full transition-all duration-300" style="width: 37%"></div>
+                <div id="barEmailsShare" class="bg-purple-600 h-full transition-all duration-300" style="width: 63%"></div>
+              </div>
+            </div>
+
+            <!-- Synthèse Financière CFO (Investissement vs Net vs Amortissement) -->
             <div class="grid grid-cols-3 gap-3 p-4 bg-slate-50 rounded-2xl border border-slate-200 text-center">
               <div>
-                <span class="text-[11px] text-slate-400 block font-semibold">Investissement Annuel</span>
-                <span id="kpiSlackCostAnnual" class="text-base font-bold text-rose-600 mt-0.5 block">7 050 €</span>
-                <span id="kpiSlackCostMonthly" class="text-[11px] text-slate-400">588 € / mois</span>
+                <span class="text-[11px] text-slate-400 block font-semibold uppercase">Investissement Annuel</span>
+                <span id="kpiSlackCostAnnual" class="text-base font-bold text-rose-600 mt-0.5 block">9 000 €</span>
+                <span id="kpiSlackCostMonthly" class="text-[11px] text-slate-400">750 € / mois</span>
               </div>
               <div class="border-x border-slate-200">
-                <span class="text-[11px] text-slate-400 block font-semibold">Valeur Nette Récupérée</span>
-                <span id="kpiNetSavingsAnnual" class="text-base font-bold text-emerald-600 mt-0.5 block">+90 450 € / an</span>
+                <span class="text-[11px] text-slate-400 block font-semibold uppercase">Valeur Nette Récupérée</span>
+                <span id="kpiNetSavingsAnnual" class="text-base font-bold text-emerald-600 mt-0.5 block">+326 096 € / an</span>
                 <span class="text-[11px] text-slate-400">bénéfice direct</span>
               </div>
               <div>
-                <span class="text-[11px] text-slate-400 block font-semibold">Délai d'Amortissement</span>
-                <span id="kpiPaybackPeriod" class="text-base font-bold text-slack-aubergine mt-0.5 block">3.2 jours / mois</span>
-                <span class="text-[11px] text-slate-400">rentabilisé immédiatement</span>
+                <span class="text-[11px] text-slate-400 block font-semibold uppercase">Délai d'Amortissement</span>
+                <span id="kpiPaybackPeriod" class="text-base font-bold text-slack-aubergine mt-0.5 block">0.3 jour / mois</span>
+                <span class="text-[11px] text-slate-400">rentabilisé dès la S1</span>
               </div>
             </div>
 
             <!-- Inaction Quote Box -->
             <div class="p-4 rounded-xl bg-amber-50 border border-amber-200 flex items-start gap-3 text-xs text-amber-900">
-              <i class="fa-solid fa-triangle-exclamation text-amber-600 mt-0.5 text-sm"></i>
+              <i class="fa-solid fa-triangle-exclamation text-amber-600 mt-0.5 text-sm flex-shrink-0"></i>
               <div>
-                <strong class="font-bold">Coût de l'inaction estimé :</strong> Vos équipes perdent actuellement l'équivalent de <span id="quoteWasteAmount" class="font-bold text-amber-950">8 125 €</span> chaque mois en inefficacités chroniques, emails en copie et réunions évitables.
+                <strong class="font-bold">Coût de l'inaction estimé :</strong> Vos équipes perdent actuellement l'équivalent de <span id="quoteWasteAmount" class="font-bold text-amber-950">27 925 €</span> chaque mois en inefficacités chroniques, emails en copie et réunions évitables.
               </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ACCORDÉON OFFICIEL SLACK : JURIDIQUE ET MÉTHODOLOGIE -->
+        <div class="mt-6 border border-slate-200 rounded-xl overflow-hidden bg-slate-50/50">
+          <button id="btnToggleLegalMethodology" class="w-full px-5 py-3.5 flex items-center justify-between text-left text-xs font-bold text-slate-700 hover:bg-slate-100/80 transition">
+            <span class="flex items-center gap-2">
+              <i class="fa-solid fa-scale-balanced text-slack-aubergine"></i>
+              <span>Juridique et Méthodologie Officielle Slack</span>
+              <span class="text-[10px] text-slate-400 font-normal ml-1">(Consulter les détails du modèle mathématique)</span>
+            </span>
+            <i id="chevronLegal" class="fa-solid fa-chevron-down text-slate-400 rotate-chevron text-xs"></i>
+          </button>
+          
+          <div id="legalContentArea" class="legal-content px-5 pb-5 text-xs text-slate-600 space-y-3 bg-white border-t border-slate-100">
+            <div class="pt-3 leading-relaxed">
+              <p class="mb-2">
+                <sup class="font-bold text-slate-800">1</sup> Les résultats fournis par cet outil sont uniquement destinés à des fins informatives et instructives pour vous aider à envisager Slack comme une solution d'entreprise et ne doivent pas être considérés comme tels. Les résultats réels peuvent varier et ne constituent en aucun cas une garantie ou un engagement concernant les résultats financiers potentiels ou réels ou tout autre avantage que vous pourriez obtenir. Les résultats individuels dépendent de facteurs tels que les pratiques de mise en œuvre, l'adoption par les utilisateurs, les configurations, les pratiques commerciales et les facteurs économiques externes.
+              </p>
+              <p class="leading-relaxed">
+                <sup class="font-bold text-slate-800">2</sup> Le modèle sous-jacent de ce calculateur de retour sur investissement <strong>est basé sur des travaux commandés par Slack à une société de conseil tierce (dont Forrester Research)</strong>. Les économies sont calculées en combinant les gains de temps <strong>estimés pour les réunions (réduction de 50 %)</strong> et les gains de temps <strong>pour les e-mails (réduction de 20 %)</strong>. Ces constantes estimées sont multipliées par le nombre de salariés à leur taux horaire moyen (sur la base de <strong>2 080 heures ouvrées par an</strong> = Salaire annuel / 2 080). Le coût annuel de Slack est calculé en multipliant le nombre d'employés par le coût annuel par utilisateur actuel au forfait Business+ (15 € / utilisateur / mois). Le retour sur investissement (ROI) est calculé comme suit : <em>(économies annuelles totales / coût annuel total)</em>, exprimé en pourcentage.
+              </p>
             </div>
           </div>
         </div>
 
+        <!-- Navigation Buttons -->
         <div class="mt-6 flex justify-between">
           <button data-goto="tab-scorecard" class="goto-tab-btn bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-5 py-2.5 rounded-xl transition flex items-center gap-2 text-sm">
             <i class="fa-solid fa-arrow-left"></i> Matrice d'Audit
@@ -600,7 +870,7 @@
             Validation du Modèle Financier & Business Case
           </h3>
           
-          <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200">
+          <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200 space-y-4">
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
               <div class="border-r border-slate-200 last:border-none">
                 <div class="text-xs text-slate-500">Périmètre Déployé</div>
@@ -608,20 +878,40 @@
               </div>
               <div class="border-r border-slate-200 last:border-none">
                 <div class="text-xs text-slate-500">Investissement Annuel</div>
-                <div class="text-lg font-bold text-rose-600 mt-1" id="propPropCost">7 050 €</div>
+                <div class="text-lg font-bold text-rose-600 mt-1" id="propPropCost">9 000 €</div>
               </div>
               <div class="border-r border-slate-200 last:border-none">
                 <div class="text-xs text-slate-500">Gains Nets de Productivité</div>
-                <div class="text-lg font-bold text-emerald-600 mt-1" id="propPropNet">90 450 € / an</div>
+                <div class="text-lg font-bold text-emerald-600 mt-1" id="propPropNet">+154 077 € / an</div>
               </div>
               <div>
                 <div class="text-xs text-slate-500">Période d'Amortissement</div>
-                <div class="text-lg font-bold text-slack-aubergine mt-1" id="propPropPayback">3.2 jours</div>
+                <div class="text-lg font-bold text-slack-aubergine mt-1" id="propPropPayback">1.4 jour</div>
+              </div>
+            </div>
+
+            <!-- Official Slack Breakdown Metrics -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-slate-200/80 text-center">
+              <div class="p-2.5 bg-white rounded-xl border border-slate-200/80">
+                <div class="text-[11px] text-slate-500 font-semibold">Jours Économisés / an</div>
+                <div class="text-base font-black text-slack-darkAubergine mt-0.5" id="propPropDaysSaved">21 jours / pers.</div>
+              </div>
+              <div class="p-2.5 bg-white rounded-xl border border-slate-200/80">
+                <div class="text-[11px] text-slate-500 font-semibold">Gain Réunions (-50%)</div>
+                <div class="text-base font-bold text-amber-600 mt-0.5" id="propPropSavingsMeetings">61 154 €</div>
+              </div>
+              <div class="p-2.5 bg-white rounded-xl border border-slate-200/80">
+                <div class="text-[11px] text-slate-500 font-semibold">Gain E-mails (-20%)</div>
+                <div class="text-base font-bold text-purple-700 mt-0.5" id="propPropSavingsEmails">101 923 €</div>
+              </div>
+              <div class="p-2.5 bg-emerald-50/80 rounded-xl border border-emerald-200">
+                <div class="text-[11px] text-emerald-800 font-semibold">Rendement Net (ROI)</div>
+                <div class="text-base font-black text-emerald-700 mt-0.5" id="propPropRoiPercent">+1 712 %</div>
               </div>
             </div>
           </div>
-          <p class="text-xs text-slate-500 italic mt-1">
-            * Hypothèse : économie de <span id="propPropMinutes">25</span> minutes/jour/collaborateur sur la base d'un coût horaire chargé de <span id="propPropRate">45</span> €/h.
+          <p class="text-xs text-slate-500 italic mt-1" id="propMethodologyFootnote">
+            * Calculé selon la méthodologie officielle Slack : réduction de 50 % des réunions et 20 % des e-mails sur la base d'un salaire annuel moyen de <span id="propPropSalary">85 000 €</span> (taux horaire de référence : <span id="propPropRate">41</span> €/h).
           </p>
         </div>
 
@@ -713,14 +1003,65 @@
         securityIAM: 4
       },
       roi: {
+        mode: "official", // "official" or "custom"
+        // Official Slack Model Inputs
+        employeesCount: 50,
+        employeesSliderIndex: 49,
+        averageSalary: 85000,
+        emailHours: 2,
+        meetingsPerMonth: 10,
+        // Shared / Plan selection
+        plan: "business", // pro, business, enterprise
+        planPrice: 15.00, // Official Slack benchmark cost per user
+        // Custom Mode Direct Inputs
         users: 50,
         hourlyRate: 45,
         minutesSaved: 25,
-        plan: "business", // pro, business, enterprise
-        planPrice: 11.75
+        // Computed Values
+        hoursSavedMeetings: 3000,
+        hoursSavedEmails: 5200,
+        daysPerEmployee: 21,
+        savingsMeetings: 61154,
+        savingsEmails: 101923,
+        annualGrossTotal: 163077,
+        monthlyGrossTotal: 13590,
+        annualSlackCost: 9000,
+        monthlySlackCost: 750,
+        annualNetTotal: 154077,
+        monthlyNetTotal: 12840,
+        roiPercent: 1712,
+        roiMultiplier: "18.1",
+        paybackDays: "1.4",
+        equivalentMinutesDaily: 38
       },
       activeTab: "tab-discovery"
     };
+
+    // Official Slack Employee slider non-linear steps (1 to 10 000 mapped to 90 slider steps 0..89)
+    const slackEmployeeSteps = [
+      ...Array.from({length: 50}, (_, t) => t + 1),        // 1 to 50
+      ...Array.from({length: 15}, (_, t) => 60 + 10 * t),  // 60, 70, ... 200
+      ...Array.from({length: 16}, (_, t) => 250 + 50 * t), // 250, 300, ... 1000
+      ...Array.from({length: 9}, (_, t) => 2000 + 1000 * t) // 2000, 3000, ... 10000
+    ];
+
+    function getEmployeeCountFromIndex(idx) {
+      const i = Math.max(0, Math.min(idx, slackEmployeeSteps.length - 1));
+      return slackEmployeeSteps[i];
+    }
+
+    function getIndexFromEmployeeCount(count) {
+      let closestIdx = 0;
+      let minDiff = Infinity;
+      slackEmployeeSteps.forEach((val, idx) => {
+        const diff = Math.abs(val - count);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestIdx = idx;
+        }
+      });
+      return closestIdx;
+    }
 
     // 10 Discovery Questions Framework
     const discoveryQuestions = [
@@ -1217,79 +1558,279 @@ Pour endiguer ce coût de l'inaction estimé à **${formatEUR(roi.annualGrossTot
     }
 
     function calculateRoi() {
-      const users = state.roi.users;
-      const hourlyRate = state.roi.hourlyRate;
-      const minutesSaved = state.roi.minutesSaved;
       const planPrice = state.roi.planPrice;
+      let users = state.roi.users;
+      let hourlyRate = state.roi.hourlyRate;
+      let hoursSavedMeetings = 0;
+      let hoursSavedEmails = 0;
+      let daysPerEmployee = 0;
+      let savingsMeetings = 0;
+      let savingsEmails = 0;
+      let annualGrossTotal = 0;
+      let monthlyGrossTotal = 0;
+      let equivalentMinutesDaily = 0;
 
-      // 21.6 working days per month on average (260 working days per year)
-      const workingDaysPerMonth = 21.6;
-      const workingDaysPerYear = 260;
+      if (state.roi.mode === "official") {
+        users = state.roi.employeesCount;
+        state.roi.users = users;
+        const averageSalary = state.roi.averageSalary;
+        const emailHours = state.roi.emailHours;
+        const meetingsPerMonth = state.roi.meetingsPerMonth;
 
-      // Hours saved per employee per day
-      const hoursSavedPerDay = minutesSaved / 60;
-      
-      // Financial savings
-      const monthlySavingsPerUser = hoursSavedPerDay * hourlyRate * workingDaysPerMonth;
-      const annualSavingsPerUser = hoursSavedPerDay * hourlyRate * workingDaysPerYear;
+        // Base légale Forrester / Slack : 2 080 heures ouvrées par an (52 sem. x 40h)
+        hourlyRate = averageSalary / 2080;
+        state.roi.hourlyRate = Math.round(hourlyRate);
 
-      const monthlyGrossTotal = monthlySavingsPerUser * users;
-      const annualGrossTotal = annualSavingsPerUser * users;
+        // Formules Officielles Slack (slack.com/roi-calculator) :
+        // 1. Réunions : 12 mois * réunions/mois * collaborateurs * 0.5 h (réduction de 50 %)
+        hoursSavedMeetings = 12 * meetingsPerMonth * users * 0.5;
 
-      // License costs
+        // 2. E-mails : collaborateurs * heures e-mails/jour * 52 (réduction de 20 % sur 5 jours ouvrés = 1h/semaine par heure e-mail)
+        hoursSavedEmails = users * emailHours * 52;
+
+        // 3. Jours économisés par collaborateur et par an (sur base d'une journée de 8 heures)
+        daysPerEmployee = Math.round((hoursSavedEmails + hoursSavedMeetings) / (users || 1) / 8);
+
+        // 4. Gains financiers
+        savingsMeetings = Math.round(hoursSavedMeetings * hourlyRate);
+        savingsEmails = Math.round(hoursSavedEmails * hourlyRate);
+        annualGrossTotal = savingsMeetings + savingsEmails;
+        monthlyGrossTotal = Math.round(annualGrossTotal / 12);
+
+        // Minutes économisées équivalentes par jour (260 jours ouvrés / an)
+        equivalentMinutesDaily = Math.round(((hoursSavedEmails + hoursSavedMeetings) / (users || 1) / 260) * 60);
+        state.roi.minutesSaved = equivalentMinutesDaily;
+      } else {
+        // Mode Personnalisé Direct
+        users = state.roi.users;
+        hourlyRate = state.roi.hourlyRate;
+        const minutesSaved = state.roi.minutesSaved;
+        equivalentMinutesDaily = minutesSaved;
+
+        const workingDaysPerMonth = 21.6;
+        const workingDaysPerYear = 260;
+        const hoursSavedPerDay = minutesSaved / 60;
+
+        const monthlySavingsPerUser = hoursSavedPerDay * hourlyRate * workingDaysPerMonth;
+        const annualSavingsPerUser = hoursSavedPerDay * hourlyRate * workingDaysPerYear;
+
+        monthlyGrossTotal = Math.round(monthlySavingsPerUser * users);
+        annualGrossTotal = Math.round(annualSavingsPerUser * users);
+        daysPerEmployee = Math.round((hoursSavedPerDay * workingDaysPerYear) / 8);
+
+        savingsMeetings = Math.round(annualGrossTotal * 0.37);
+        savingsEmails = Math.round(annualGrossTotal * 0.63);
+        hoursSavedMeetings = Math.round(savingsMeetings / (hourlyRate || 1));
+        hoursSavedEmails = Math.round(savingsEmails / (hourlyRate || 1));
+      }
+
+      // Coûts licences Slack
       const monthlySlackCost = users * planPrice;
       const annualSlackCost = monthlySlackCost * 12;
 
-      // Net savings
+      // Gains nets
       const annualNetTotal = annualGrossTotal - annualSlackCost;
       const monthlyNetTotal = monthlyGrossTotal - monthlySlackCost;
 
-      // ROI metrics
+      // Métriques ROI
       const roiPercent = annualSlackCost > 0 ? Math.round((annualNetTotal / annualSlackCost) * 100) : 0;
       const roiMultiplier = annualSlackCost > 0 ? (annualGrossTotal / annualSlackCost).toFixed(1) : "0";
 
-      // Payback period (days of work to pay the monthly license)
-      const dailyValuePerUser = hoursSavedPerDay * hourlyRate;
-      const paybackDays = dailyValuePerUser > 0 ? (planPrice / dailyValuePerUser).toFixed(1) : "0";
+      // Délai d'amortissement (jours de travail nécessaires chaque mois pour rembourser la licence)
+      const dailyGrossPerUser = users > 0 ? (annualGrossTotal / users / 260) : 0;
+      const paybackDays = dailyGrossPerUser > 0 ? (planPrice / dailyGrossPerUser).toFixed(1) : "0";
 
-      // Safely update DOM elements
-      const elSlackCostAnnual = document.getElementById("kpiSlackCostAnnual");
-      if (elSlackCostAnnual) elSlackCostAnnual.textContent = formatEUR(annualSlackCost);
-      const elSlackCostMonthly = document.getElementById("kpiSlackCostMonthly");
-      if (elSlackCostMonthly) elSlackCostMonthly.textContent = formatEUR(monthlySlackCost);
+      // Mise à jour de l'état
+      state.roi.hoursSavedMeetings = hoursSavedMeetings;
+      state.roi.hoursSavedEmails = hoursSavedEmails;
+      state.roi.daysPerEmployee = daysPerEmployee;
+      state.roi.savingsMeetings = savingsMeetings;
+      state.roi.savingsEmails = savingsEmails;
+      state.roi.annualGrossTotal = annualGrossTotal;
+      state.roi.monthlyGrossTotal = monthlyGrossTotal;
+      state.roi.annualSlackCost = annualSlackCost;
+      state.roi.monthlySlackCost = monthlySlackCost;
+      state.roi.annualNetTotal = annualNetTotal;
+      state.roi.monthlyNetTotal = monthlyNetTotal;
+      state.roi.roiPercent = roiPercent;
+      state.roi.roiMultiplier = roiMultiplier;
+      state.roi.paybackDays = paybackDays;
+      state.roi.equivalentMinutesDaily = equivalentMinutesDaily;
+
+      // Mise à jour de l'affichage DOM
       const elGrossSavingsAnnual = document.getElementById("kpiGrossSavingsAnnual");
       if (elGrossSavingsAnnual) elGrossSavingsAnnual.textContent = formatEUR(annualGrossTotal);
       const elGrossSavingsMonthly = document.getElementById("kpiGrossSavingsMonthly");
-      if (elGrossSavingsMonthly) elGrossSavingsMonthly.textContent = formatEUR(monthlyGrossTotal);
+      if (elGrossSavingsMonthly) elGrossSavingsMonthly.innerHTML = `<i class="fa-regular fa-clock mr-1 text-purple-300"></i>Soit ${formatEUR(monthlyGrossTotal)} / mois`;
+      const elEquivalentMinutes = document.getElementById("kpiEquivalentMinutesDaily");
+      if (elEquivalentMinutes) elEquivalentMinutes.innerHTML = `<i class="fa-solid fa-bolt mr-1 text-amber-300"></i>~${equivalentMinutesDaily} min gagnées / collab. / jour`;
+
+      // Grille des 6 métriques officielles Slack
+      const elDaysSaved = document.getElementById("kpiDaysSavedPerUser");
+      if (elDaysSaved) elDaysSaved.textContent = `${daysPerEmployee} jours`;
+      const elHoursMeetings = document.getElementById("kpiHoursSavedMeetings");
+      if (elHoursMeetings) elHoursMeetings.textContent = `${new Intl.NumberFormat('fr-FR').format(Math.round(hoursSavedMeetings))} h`;
+      const elHoursEmails = document.getElementById("kpiHoursSavedEmails");
+      if (elHoursEmails) elHoursEmails.textContent = `${new Intl.NumberFormat('fr-FR').format(Math.round(hoursSavedEmails))} h`;
+      const elSavingsMeetings = document.getElementById("kpiSavingsMeetings");
+      if (elSavingsMeetings) elSavingsMeetings.textContent = formatEUR(savingsMeetings);
+      const elSavingsEmails = document.getElementById("kpiSavingsEmails");
+      if (elSavingsEmails) elSavingsEmails.textContent = formatEUR(savingsEmails);
+      const elRoiPercentage = document.getElementById("kpiRoiPercentage");
+      if (elRoiPercentage) elRoiPercentage.textContent = `+${new Intl.NumberFormat('fr-FR').format(roiPercent)} %`;
+      const elRoiMultiplier = document.getElementById("roiMultiplierBadge");
+      if (elRoiMultiplier) elRoiMultiplier.textContent = `${roiMultiplier}x la mise`;
+
+      // Barre de partage Réunions vs E-mails
+      const totalCombinedSavings = (savingsMeetings + savingsEmails) || 1;
+      const pctMeetings = Math.max(10, Math.min(90, Math.round((savingsMeetings / totalCombinedSavings) * 100)));
+      const pctEmails = 100 - pctMeetings;
+      const elPctMeetings = document.getElementById("pctMeetingsShare");
+      if (elPctMeetings) elPctMeetings.textContent = `${pctMeetings}%`;
+      const elPctEmails = document.getElementById("pctEmailsShare");
+      if (elPctEmails) elPctEmails.textContent = `${pctEmails}%`;
+      const elBarMeetings = document.getElementById("barMeetingsShare");
+      if (elBarMeetings) elBarMeetings.style.width = `${pctMeetings}%`;
+      const elBarEmails = document.getElementById("barEmailsShare");
+      if (elBarEmails) elBarEmails.style.width = `${pctEmails}%`;
+
+      // Métriques CFO
+      const elSlackCostAnnual = document.getElementById("kpiSlackCostAnnual");
+      if (elSlackCostAnnual) elSlackCostAnnual.textContent = formatEUR(annualSlackCost);
+      const elSlackCostMonthly = document.getElementById("kpiSlackCostMonthly");
+      if (elSlackCostMonthly) elSlackCostMonthly.textContent = `${formatEUR(monthlySlackCost)} / mois`;
       const elNetSavingsAnnual = document.getElementById("kpiNetSavingsAnnual");
       if (elNetSavingsAnnual) elNetSavingsAnnual.textContent = `+${formatEUR(annualNetTotal)} / an`;
       const elPaybackPeriod = document.getElementById("kpiPaybackPeriod");
-      if (elPaybackPeriod) elPaybackPeriod.textContent = `${paybackDays} jours / mois`;
-      const elRoiPercentage = document.getElementById("kpiRoiPercentage");
-      if (elRoiPercentage) elRoiPercentage.textContent = `+${roiPercent} %`;
-      const elRoiMultiplier = document.getElementById("roiMultiplierBadge");
-      if (elRoiMultiplier) elRoiMultiplier.textContent = `${roiMultiplier}x la mise`;
-      const elTabRoiPill = document.getElementById("tabRoiPill");
-      if (elTabRoiPill) elTabRoiPill.textContent = `+${roiPercent}%`;
+      if (elPaybackPeriod) elPaybackPeriod.textContent = `${paybackDays} ${parseFloat(paybackDays) <= 1 ? 'jour' : 'jours'} / mois`;
       const elQuoteWasteAmount = document.getElementById("quoteWasteAmount");
       if (elQuoteWasteAmount) elQuoteWasteAmount.textContent = formatEUR(monthlyGrossTotal);
 
+      // Pill de l'onglet ROI
+      const elTabRoiPill = document.getElementById("tabRoiPill");
+      if (elTabRoiPill) elTabRoiPill.textContent = `+${roiPercent}%`;
+
       return {
-        users, hourlyRate, minutesSaved, planPrice,
-        annualSlackCost, annualNetTotal, paybackDays, roiPercent
+        users, hourlyRate, planPrice,
+        hoursSavedMeetings, hoursSavedEmails, daysPerEmployee,
+        savingsMeetings, savingsEmails,
+        annualGrossTotal, monthlyGrossTotal,
+        annualSlackCost, monthlySlackCost,
+        annualNetTotal, monthlyNetTotal,
+        paybackDays, roiPercent, roiMultiplier
       };
     }
 
     function setupRoiControls() {
+      // Sélecteur de mode
+      const btnModeOfficial = document.getElementById("btnModeOfficial");
+      const btnModeCustom = document.getElementById("btnModeCustom");
+      const controlsOfficial = document.getElementById("controlsOfficialSection");
+      const controlsCustom = document.getElementById("controlsCustomSection");
+
+      function setRoiMode(mode) {
+        state.roi.mode = mode;
+        if (mode === "official") {
+          if (btnModeOfficial) btnModeOfficial.className = "px-3 py-1.5 rounded-lg bg-white text-slack-darkAubergine shadow-sm transition flex items-center gap-1.5 font-bold";
+          if (btnModeCustom) btnModeCustom.className = "px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5 font-medium";
+          if (controlsOfficial) controlsOfficial.classList.remove("hidden");
+          if (controlsCustom) controlsCustom.classList.add("hidden");
+        } else {
+          if (btnModeCustom) btnModeCustom.className = "px-3 py-1.5 rounded-lg bg-white text-slack-darkAubergine shadow-sm transition flex items-center gap-1.5 font-bold";
+          if (btnModeOfficial) btnModeOfficial.className = "px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5 font-medium";
+          if (controlsCustom) controlsCustom.classList.remove("hidden");
+          if (controlsOfficial) controlsOfficial.classList.add("hidden");
+        }
+        calculateRoi();
+        updateProposalView();
+      }
+
+      if (btnModeOfficial) btnModeOfficial.addEventListener("click", () => setRoiMode("official"));
+      if (btnModeCustom) btnModeCustom.addEventListener("click", () => setRoiMode("custom"));
+
+      // Curseur 1 officiel : Nombre de collaborateurs
+      const inputOfficialEmployees = document.getElementById("inputOfficialEmployees");
+      if (inputOfficialEmployees) {
+        inputOfficialEmployees.addEventListener("input", (e) => {
+          const idx = parseInt(e.target.value, 10);
+          state.roi.employeesSliderIndex = idx;
+          state.roi.employeesCount = getEmployeeCountFromIndex(idx);
+          state.roi.users = state.roi.employeesCount;
+          
+          const el = document.getElementById("displayOfficialEmployees");
+          if (el) el.textContent = `${new Intl.NumberFormat('fr-FR').format(state.roi.employeesCount)} personnes`;
+          
+          const customUserSlider = document.getElementById("inputUserCount");
+          if (customUserSlider) customUserSlider.value = Math.min(500, state.roi.employeesCount);
+          const customUserDisplay = document.getElementById("displayUserCount");
+          if (customUserDisplay) customUserDisplay.textContent = `${state.roi.employeesCount} personnes`;
+
+          calculateRoi();
+          updateProposalView();
+        });
+      }
+
+      // Curseur 2 officiel : Salaire annuel moyen
+      const inputOfficialSalary = document.getElementById("inputOfficialSalary");
+      if (inputOfficialSalary) {
+        inputOfficialSalary.addEventListener("input", (e) => {
+          state.roi.averageSalary = parseInt(e.target.value, 10);
+          const el = document.getElementById("displayOfficialSalary");
+          if (el) el.textContent = formatEUR(state.roi.averageSalary);
+          
+          const hourlyVal = Math.round(state.roi.averageSalary / 2080);
+          const customHourlySlider = document.getElementById("inputHourlyRate");
+          if (customHourlySlider) customHourlySlider.value = Math.min(150, Math.max(20, hourlyVal));
+          const customHourlyDisplay = document.getElementById("displayHourlyRate");
+          if (customHourlyDisplay) customHourlyDisplay.textContent = `${hourlyVal} € / heure`;
+
+          calculateRoi();
+          updateProposalView();
+        });
+      }
+
+      // Curseur 3 officiel : Heures e-mails quotidiennes
+      const inputOfficialEmailHours = document.getElementById("inputOfficialEmailHours");
+      if (inputOfficialEmailHours) {
+        inputOfficialEmailHours.addEventListener("input", (e) => {
+          state.roi.emailHours = parseInt(e.target.value, 10);
+          const el = document.getElementById("displayOfficialEmailHours");
+          if (el) el.textContent = `${state.roi.emailHours} h / jour`;
+          calculateRoi();
+          updateProposalView();
+        });
+      }
+
+      // Curseur 4 officiel : Réunions virtuelles mensuelles
+      const inputOfficialMeetings = document.getElementById("inputOfficialMeetings");
+      if (inputOfficialMeetings) {
+        inputOfficialMeetings.addEventListener("input", (e) => {
+          state.roi.meetingsPerMonth = parseInt(e.target.value, 10);
+          const el = document.getElementById("displayOfficialMeetings");
+          if (el) el.textContent = `${state.roi.meetingsPerMonth} réunions`;
+          calculateRoi();
+          updateProposalView();
+        });
+      }
+
+      // Curseurs mode personnalisé
       const userSlider = document.getElementById("inputUserCount");
       const hourlySlider = document.getElementById("inputHourlyRate");
       const minutesSlider = document.getElementById("inputMinutesSaved");
 
       if (userSlider) {
         userSlider.addEventListener("input", (e) => {
-          state.roi.users = parseInt(e.target.value, 10);
+          const val = parseInt(e.target.value, 10);
+          state.roi.users = val;
+          state.roi.employeesCount = val;
           const el = document.getElementById("displayUserCount");
-          if (el) el.textContent = `${state.roi.users} personnes`;
+          if (el) el.textContent = `${val} personnes`;
+          
+          const offSlider = document.getElementById("inputOfficialEmployees");
+          if (offSlider) offSlider.value = getIndexFromEmployeeCount(val);
+          const offDisplay = document.getElementById("displayOfficialEmployees");
+          if (offDisplay) offDisplay.textContent = `${val} personnes`;
+
           calculateRoi();
           updateProposalView();
         });
@@ -1297,9 +1838,17 @@ Pour endiguer ce coût de l'inaction estimé à **${formatEUR(roi.annualGrossTot
 
       if (hourlySlider) {
         hourlySlider.addEventListener("input", (e) => {
-          state.roi.hourlyRate = parseInt(e.target.value, 10);
+          const val = parseInt(e.target.value, 10);
+          state.roi.hourlyRate = val;
+          state.roi.averageSalary = val * 2080;
           const el = document.getElementById("displayHourlyRate");
-          if (el) el.textContent = `${state.roi.hourlyRate} € / heure`;
+          if (el) el.textContent = `${val} € / heure`;
+
+          const offSalary = document.getElementById("inputOfficialSalary");
+          if (offSalary) offSalary.value = Math.min(130000, Math.max(20000, state.roi.averageSalary));
+          const offSalaryDisplay = document.getElementById("displayOfficialSalary");
+          if (offSalaryDisplay) offSalaryDisplay.textContent = formatEUR(state.roi.averageSalary);
+
           calculateRoi();
           updateProposalView();
         });
@@ -1315,7 +1864,7 @@ Pour endiguer ce coût de l'inaction estimé à **${formatEUR(roi.annualGrossTot
         });
       }
 
-      // Plan Buttons
+      // Boutons choix du forfait Slack
       document.querySelectorAll(".plan-select-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           const plan = btn.getAttribute("data-plan");
@@ -1325,14 +1874,32 @@ Pour endiguer ce coût de l'inaction estimé à **${formatEUR(roi.annualGrossTot
           state.roi.planPrice = price;
 
           document.querySelectorAll(".plan-select-btn").forEach(b => {
-            b.className = "plan-select-btn p-2.5 rounded-xl border text-center transition bg-white border-slate-300 text-slate-700 hover:border-slack-aubergine";
+            b.className = "plan-select-btn p-2 rounded-xl border text-center transition bg-white border-slate-300 text-slate-700 hover:border-slack-aubergine";
           });
-          btn.className = "plan-select-btn p-2.5 rounded-xl border-2 text-center transition bg-purple-50 border-slack-aubergine text-slack-darkAubergine shadow-sm ring-1 ring-slack-aubergine/30";
+          btn.className = "plan-select-btn p-2 rounded-xl border-2 text-center transition bg-purple-50 border-slack-aubergine text-slack-darkAubergine shadow-sm ring-1 ring-slack-aubergine/30 relative";
 
           calculateRoi();
           updateProposalView();
         });
       });
+
+      // Accordéon Juridique et Méthodologie Slack
+      const btnToggleLegal = document.getElementById("btnToggleLegalMethodology");
+      const legalContentArea = document.getElementById("legalContentArea");
+      const chevronLegal = document.getElementById("chevronLegal");
+
+      if (btnToggleLegal && legalContentArea && chevronLegal) {
+        btnToggleLegal.addEventListener("click", () => {
+          const isOpen = legalContentArea.classList.contains("open");
+          if (isOpen) {
+            legalContentArea.classList.remove("open");
+            chevronLegal.classList.remove("open");
+          } else {
+            legalContentArea.classList.add("open");
+            chevronLegal.classList.add("open");
+          }
+        });
+      }
     }
 
     function updateProposalView() {
@@ -1389,14 +1956,25 @@ Pour endiguer ce coût de l'inaction estimé à **${formatEUR(roi.annualGrossTot
         grid.appendChild(col);
       });
 
-      // 3. ROI Data
+      // 3. ROI Data (Intégration Métriques Officielles Slack)
       const roiMetrics = calculateRoi();
       document.getElementById("propPropUsers").textContent = `${roiMetrics.users} collaborateurs`;
       document.getElementById("propPropCost").textContent = formatEUR(roiMetrics.annualSlackCost);
       document.getElementById("propPropNet").textContent = `+${formatEUR(roiMetrics.annualNetTotal)} / an`;
-      document.getElementById("propPropPayback").textContent = `${roiMetrics.paybackDays} jours`;
-      document.getElementById("propPropMinutes").textContent = state.roi.minutesSaved;
-      document.getElementById("propPropRate").textContent = state.roi.hourlyRate;
+      document.getElementById("propPropPayback").textContent = `${roiMetrics.paybackDays} ${parseFloat(roiMetrics.paybackDays) <= 1 ? 'jour' : 'jours'}`;
+      
+      const elDaysSaved = document.getElementById("propPropDaysSaved");
+      if (elDaysSaved) elDaysSaved.textContent = `${roiMetrics.daysPerEmployee} jours / pers.`;
+      const elSavingsMeetings = document.getElementById("propPropSavingsMeetings");
+      if (elSavingsMeetings) elSavingsMeetings.textContent = formatEUR(roiMetrics.savingsMeetings);
+      const elSavingsEmails = document.getElementById("propPropSavingsEmails");
+      if (elSavingsEmails) elSavingsEmails.textContent = formatEUR(roiMetrics.savingsEmails);
+      const elRoiPercent = document.getElementById("propPropRoiPercent");
+      if (elRoiPercent) elRoiPercent.textContent = `+${new Intl.NumberFormat('fr-FR').format(roiMetrics.roiPercent)} %`;
+      const elSalary = document.getElementById("propPropSalary");
+      if (elSalary) elSalary.textContent = formatEUR(state.roi.averageSalary);
+      const elRate = document.getElementById("propPropRate");
+      if (elRate) elRate.textContent = state.roi.hourlyRate;
 
       // 4. Plan features list
       const planNameEl = document.getElementById("propPlanName");
@@ -1416,8 +1994,8 @@ Pour endiguer ce coût de l'inaction estimé à **${formatEUR(roi.annualGrossTot
         `;
       } else if (state.roi.plan === "business") {
         planNameEl.textContent = "Slack Business+";
-        planPriceEl.innerHTML = `11,75 € <span class="text-xs font-normal text-slate-500">/util./mois</span>`;
-        planDescEl.textContent = "Le standard pour entreprises en croissance : intègre la gestion des identités (SSO SAML / Okta / Azure AD), la synchronisation SCIM des comptes, un SLA 99,99% et les exports de conformité.";
+        planPriceEl.innerHTML = `${state.roi.planPrice.toFixed(2).replace('.', ',')} € <span class="text-xs font-normal text-slate-500">/util./mois</span>`;
+        planDescEl.textContent = "Forfait de référence du simulateur officiel Slack : intègre la gestion des identités (SSO SAML / Okta / Azure AD), la synchronisation SCIM des comptes, un SLA 99,99% et les exports de conformité.";
         featuresEl.innerHTML = `
           <div class="flex items-center gap-2 text-xs text-slate-700"><i class="fa-solid fa-check text-slack-green"></i> <strong>SSO SAML</strong> (Okta, Google, Azure AD) & Provisioning <strong>SCIM</strong></div>
           <div class="flex items-center gap-2 text-xs text-slate-700"><i class="fa-solid fa-check text-slack-green"></i> Exports complets de tous les messages (canaux publics, privés et MP)</div>
@@ -1499,18 +2077,48 @@ Pour endiguer ce coût de l'inaction estimé à **${formatEUR(roi.annualGrossTot
           state.discoveryAnswers[q.id] = q.defaultAnswer;
         });
         state.scorecard = { asyncCulture: 2, externalCollab: 3, automation: 2, securityIAM: 4 };
+        
+        // Official Slack Model Inputs
+        state.roi.mode = "official";
+        state.roi.employeesCount = 120;
+        state.roi.employeesSliderIndex = getIndexFromEmployeeCount(120);
+        state.roi.averageSalary = 85000;
+        state.roi.emailHours = 2;
+        state.roi.meetingsPerMonth = 12;
         state.roi.users = 120;
-        state.roi.hourlyRate = 55;
-        state.roi.minutesSaved = 30;
+        state.roi.hourlyRate = Math.round(85000 / 2080);
+        state.roi.minutesSaved = 38;
         state.roi.plan = "business";
-        state.roi.planPrice = 11.75;
+        state.roi.planPrice = 15.00;
 
+        // Sync Official UI controls
+        const offEmp = document.getElementById("inputOfficialEmployees");
+        if (offEmp) offEmp.value = state.roi.employeesSliderIndex;
+        const offEmpDisp = document.getElementById("displayOfficialEmployees");
+        if (offEmpDisp) offEmpDisp.textContent = "120 personnes";
+
+        const offSal = document.getElementById("inputOfficialSalary");
+        if (offSal) offSal.value = 85000;
+        const offSalDisp = document.getElementById("displayOfficialSalary");
+        if (offSalDisp) offSalDisp.textContent = formatEUR(85000);
+
+        const offMail = document.getElementById("inputOfficialEmailHours");
+        if (offMail) offMail.value = 2;
+        const offMailDisp = document.getElementById("displayOfficialEmailHours");
+        if (offMailDisp) offMailDisp.textContent = "2 h / jour";
+
+        const offMeet = document.getElementById("inputOfficialMeetings");
+        if (offMeet) offMeet.value = 12;
+        const offMeetDisp = document.getElementById("displayOfficialMeetings");
+        if (offMeetDisp) offMeetDisp.textContent = "12 réunions";
+
+        // Sync Custom UI controls
         document.getElementById("inputUserCount").value = 120;
         document.getElementById("displayUserCount").textContent = "120 personnes";
-        document.getElementById("inputHourlyRate").value = 55;
-        document.getElementById("displayHourlyRate").textContent = "55 € / heure";
-        document.getElementById("inputMinutesSaved").value = 30;
-        document.getElementById("displayMinutesSaved").textContent = "30 minutes / jour";
+        document.getElementById("inputHourlyRate").value = state.roi.hourlyRate;
+        document.getElementById("displayHourlyRate").textContent = `${state.roi.hourlyRate} € / heure`;
+        document.getElementById("inputMinutesSaved").value = 38;
+        document.getElementById("displayMinutesSaved").textContent = "38 minutes / jour";
 
         renderDiscoveryQuestions();
         renderScorecard();
@@ -1523,18 +2131,53 @@ Pour endiguer ce coût de l'inaction estimé à **${formatEUR(roi.annualGrossTot
       document.getElementById("btnResetAll").addEventListener("click", () => {
         state.discoveryAnswers = {};
         state.scorecard = { asyncCulture: 3, externalCollab: 3, automation: 2, securityIAM: 4 };
-        state.roi = { users: 50, hourlyRate: 45, minutesSaved: 25, plan: "business", planPrice: 11.75 };
+        
+        state.roi = {
+          mode: "official",
+          employeesCount: 50,
+          employeesSliderIndex: 49,
+          averageSalary: 85000,
+          emailHours: 2,
+          meetingsPerMonth: 10,
+          plan: "business",
+          planPrice: 15.00,
+          users: 50,
+          hourlyRate: 41,
+          minutesSaved: 38
+        };
 
         document.getElementById("clientName").value = "Acme Corp";
         document.getElementById("clientContact").value = "Marc Dupont (VP Operations)";
         document.getElementById("clientSector").value = "Tech / SaaS / ESN";
 
+        // Reset Official UI controls
+        const offEmp = document.getElementById("inputOfficialEmployees");
+        if (offEmp) offEmp.value = 49;
+        const offEmpDisp = document.getElementById("displayOfficialEmployees");
+        if (offEmpDisp) offEmpDisp.textContent = "50 personnes";
+
+        const offSal = document.getElementById("inputOfficialSalary");
+        if (offSal) offSal.value = 85000;
+        const offSalDisp = document.getElementById("displayOfficialSalary");
+        if (offSalDisp) offSalDisp.textContent = formatEUR(85000);
+
+        const offMail = document.getElementById("inputOfficialEmailHours");
+        if (offMail) offMail.value = 2;
+        const offMailDisp = document.getElementById("displayOfficialEmailHours");
+        if (offMailDisp) offMailDisp.textContent = "2 h / jour";
+
+        const offMeet = document.getElementById("inputOfficialMeetings");
+        if (offMeet) offMeet.value = 10;
+        const offMeetDisp = document.getElementById("displayOfficialMeetings");
+        if (offMeetDisp) offMeetDisp.textContent = "10 réunions";
+
+        // Reset Custom UI controls
         document.getElementById("inputUserCount").value = 50;
         document.getElementById("displayUserCount").textContent = "50 personnes";
-        document.getElementById("inputHourlyRate").value = 45;
-        document.getElementById("displayHourlyRate").textContent = "45 € / heure";
-        document.getElementById("inputMinutesSaved").value = 25;
-        document.getElementById("displayMinutesSaved").textContent = "25 minutes / jour";
+        document.getElementById("inputHourlyRate").value = 41;
+        document.getElementById("displayHourlyRate").textContent = "41 € / heure";
+        document.getElementById("inputMinutesSaved").value = 38;
+        document.getElementById("displayMinutesSaved").textContent = "38 minutes / jour";
 
         renderDiscoveryQuestions();
         renderScorecard();
@@ -1554,19 +2197,21 @@ Pour endiguer ce coût de l'inaction estimé à **${formatEUR(roi.annualGrossTot
 :rocket: *Restitution Stratégique Slack — ${client}*
 ----------------------------------------------------
 *Score d'Audit de Maturité :* ${totalScore}/20 pts
-*Forfait Prescrit :* *${planName}* (${state.roi.planPrice} € / util. / mois)
+*Forfait Prescrit :* *${planName}* (${state.roi.planPrice.toFixed(2)} € / util. / mois)
 
-:bar_chart: *Business Case & Rentabilité Financière :*
-• Collaborateurs déployés : *${roi.users} pers.*
-• Gain de temps projeté : *${state.roi.minutesSaved} min / jour / collab.*
+:bar_chart: *Business Case Officiel Slack (Méthodologie Forrester) :*
+• Périmètre déployé : *${roi.users} collaborateurs*
+• Jours de travail économisés : *${roi.daysPerEmployee} jours / an / collaborateur*
+• Gains Réunions (-50%) : *${formatEUR(roi.savingsMeetings)}* (${new Intl.NumberFormat('fr-FR').format(Math.round(roi.hoursSavedMeetings))} h économisées)
+• Gains E-mails (-20%) : *${formatEUR(roi.savingsEmails)}* (${new Intl.NumberFormat('fr-FR').format(Math.round(roi.hoursSavedEmails))} h économisées)
 • Coût annuel des licences : *${formatEUR(roi.annualSlackCost)}*
-• Valeur nette récupérée : *+${formatEUR(roi.annualNetTotal)} / an*
-• Amortissement : *Rentabilisé en ${roi.paybackDays} jours par mois* (ROI de *+${roi.roiPercent}%*)
+• Bénéfice net annuel : *+${formatEUR(roi.annualNetTotal)} / an*
+• Amortissement : *Rentabilisé en ${roi.paybackDays} jours par mois* (ROI net de *+${new Intl.NumberFormat('fr-FR').format(roi.roiPercent)}%*)
 
 :key: *Axes Prioritaires Débloqués :*
-1. *Sécurité & IAM :* Mise en œuvre du SSO SAML + SCIM (révocation immédiate des accès freelances).
-2. *Fluidité Partenaires :* Remplacement des boucles WhatsApp/emails par *Slack Connect*.
-3. *Automatisation :* Déploiement de 3 flux no-code *Workflow Builder* pour supprimer les formulaires manuels.
+1. *Sécurité & IAM :* Déploiement du SSO SAML + SCIM (révocation instantanée des accès).
+2. *Fluidité Partenaires :* Remplacement des e-mails et boucles WhatsApp par *Slack Connect*.
+3. *Automatisation No-Code :* Déploiement du *Workflow Builder* pour supprimer les formulaires et relances manuelles.
 
 :white_check_mark: *Prochaine étape recommandée :* Lancement d'un pilote cadré de 30 jours sur l'équipe clé.
         `.trim();
